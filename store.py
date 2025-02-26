@@ -48,7 +48,8 @@ def index():
     hero = Section(
         DivCentered(
             # Add a clickable profile picture
-            Img(src="", cls="h-32 w-32 rounded-full cursor-pointer profile-pic animate__animated animate__bounce"),
+            Img(src="./image/logo.png",
+                cls="h-32 w-32 rounded-full cursor-pointer profile-pic animate__animated animate__bounce"),
             H1("Hello, I'm Chilavert N'dah",
                cls="text-6xl font-bold mb-6 text-center text-white animate__animated animate__fadeInDown"),
             P("Software Developer ", cls="text-xl text-blue-100 mb-8 animate__animated animate__fadeInUp"),
@@ -59,11 +60,6 @@ def index():
         )
     )
 
-    # Ajouter un overlay semi-transparent
-    overlay = Div(cls="absolute inset-0 bg-black/50")  # Overlay noir semi-transparent
-
-    # Inclure l'overlay dans la section hero
-    hero.children.insert(0, overlay)  # Ajoutez l'overlay comme premier enfant de la section hero
 
     # Projects Section (With Animated Cards)
     projects = Section(
