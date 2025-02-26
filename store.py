@@ -47,18 +47,16 @@ def index():
     # Hero Section (With Profile Picture and Animated Title)
     hero = Section(
         DivCentered(
-            # Contenu de la section hero
+            # Add a clickable profile picture
+            Img(src="", cls="h-32 w-32 rounded-full cursor-pointer profile-pic animate__animated animate__bounce"),
             H1("Hello, I'm Chilavert N'dah",
                cls="text-6xl font-bold mb-6 text-center text-white animate__animated animate__fadeInDown"),
             P("Software Developer ", cls="text-xl text-blue-100 mb-8 animate__animated animate__fadeInUp"),
             Button("View My Work",
                    cls="text-lg bg-white text-blue-600 hover:bg-blue-50 px-6 py-3 rounded-lg transition-colors animate__animated animate__fadeIn",
                    href="#work"),
-            cls="min-h-screen flex items-center justify-center py-20 relative",
-            # Ajoutez relative pour positionner l'overlay
-            style="background-image: url('./profile.jpg'); background-size: cover; background-position: center;"
-        ),
-        cls="relative"  # Ajoutez relative pour positionner l'overlay
+            cls="min-h-screen flex items-center justify-center py-20 "
+        )
     )
 
     # Ajouter un overlay semi-transparent
