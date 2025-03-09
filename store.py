@@ -28,19 +28,31 @@ def index():
             width: max-content;
         }
 
+        /* Appliquer le motif de cahier au body entier */
         body {
             background-color: #0f172a !important;
             color: #f8fafc !important;
+            background-image: 
+                linear-gradient(rgba(148, 163, 184, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(148, 163, 184, 0.1) 1px, transparent 1px) !important;
+            background-size: 100% 24px, 24px 100% !important;
+            background-position: 0 0 !important;
+        }
+
+        /* S'assurer que les éléments sur le fond sont toujours visibles */
+        .dark.bg-slate-900 {
+            background-color: transparent !important; /* Rendre transparent pour voir le fond */
+        }
+
+        /* Pour la NavBar, ajouter un fond semi-transparent pour que les lignes soient visibles */
+        .backdrop-blur-lg.bg-blue-600\/90 {
+            background-color: rgba(30, 64, 175, 0.85) !important; /* Un peu plus transparent */
         }
 
         .dark .text-blue-100 {
             color: #e0f2fe !important;
         }
 
-        .bg-blue-600/90 {
-            background-color: #1e40af !important;
-        }
-        
         .github-triangle-layout {
             position: relative;
             margin-top: 4rem;
@@ -55,21 +67,20 @@ def index():
             border-left: 20px solid transparent;
             border-right: 20px solid transparent;
             border-bottom: 30px solid #1e293b;
-            
         }
-        
+
         /* Supprime les bordures des composants Card */
         .card {
             border: none !important;
             box-shadow: none !important;
         }
 
-    /* Supprime les bordures des images */
+        /* Supprime les bordures des images */
         img {
             border: none !important;
             outline: none !important;
         }
-        """
+    """
     custom_style = Style(custom_css)
 
     # Navigation
@@ -143,22 +154,38 @@ def index():
         )
     )
 
-    # About Me Section (With Animated Text)
     about = Section(
         Container(
             DivCentered(
                 H2("About Me", cls="text-4xl font-semibold mb-12 animate__animated animate__fadeIn text-slate-100"),
-                P("""
-                    I’m a Computer Science graduate from UCAO in Cotonou. Currently, I work as a freelance Software Developer and 
-                    actively contribute to various open-source projects to enhance my skills in full-stack development and cloud technologies. 
-                    Outside of coding, I enjoy playing basketball, listening to music, and traveling. 
-                    Fun fact: I once spent 3 hours debugging only to realize I forgot to save the file. 😅
-                """, cls="text-xl text-center max-w-3xl leading-relaxed text-slate-300 animate__animated animate__fadeInUp"),
-                DivHStacked(
-                    Button("Resume", href="https://drive.google.com/drive/folders/1lI8KVnN6aZ6uaj7JpwG91GhEB3we0iIX?usp=drive_link", cls="text-lg bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 rounded-lg transition-colors animate__animated animate__fadeInLeft"),
-                    Button("LinkedIn", href="https://www.linkedin.com/in/chilavert-n-dah-ab5779272/", cls="text-lg bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 rounded-lg transition-colors animate__animated animate__fadeInUp"),
-                    Button("YouTube", href="https://www.youtube.com/channel/UC6dVeSK8zBQGaaRE7DXA2ow", cls="text-lg bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 rounded-lg transition-colors animate__animated animate__fadeInRight"),
-                    cls="gap-4 mt-8"
+                Grid(
+                    # Colonne photo
+                    Div(
+                        Img(src="image/full_profil.png",  # ← Votre photo
+                            cls="w-full h-auto rounded-2xl shadow-2xl border-4 border-slate-700/20 animate__animated animate__fadeInLeft",
+                            style="max-width: 500px;"),
+                        cls="flex items-center justify-center"
+                    ),
+
+                    # Colonne texte
+                    Div(
+                        P("""
+                            I'm a Computer Science graduate from UCAO in Cotonou. Currently, I work as a freelance Software Developer and 
+                            actively contribute to various open-source projects to enhance my skills in full-stack development and cloud technologies. 
+                            Outside of coding, I enjoy playing basketball, listening to music, and traveling. 
+                            Fun fact: I once spent 3 hours debugging only to realize I forgot to save the file. 😅
+                        """,
+                          cls="text-xl max-w-2xl leading-relaxed text-slate-300 animate__animated animate__fadeInRight mb-12"),
+                        # ← Ajout de mb-12 pour la marge
+
+                        DivHStacked(
+                            Button("Resume", href="...",
+                                   cls="text-lg bg-slate-700 text-slate-100 hover:bg-slate-600 px-6 py-3 rounded-lg transition-colors animate__animated animate__fadeInLeft"),
+                        ),
+                        cls="flex flex-col items-start"
+                    ),
+
+                    cls="grid grid-cols-1 md:grid-cols-2 gap-12 items-center"  # Disposition responsive
                 ),
                 cls="py-32",
                 id="about"
