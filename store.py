@@ -2,40 +2,89 @@ from fasthtml.common import *
 from monsterui.all import *
 
 # Use blue theme for a professional look
-hdrs = Theme.blue.headers()
+hdrs = (
+    Theme.blue.headers()
+)
 
 app, rt = fast_app(hdrs=hdrs)
 
 @rt
 def index():
-    # Include Animate.css
-    animate_css = Link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css")
+    # CSS animations
+    animate_css = Link(rel="stylesheet",
+                       href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css")
 
-    # Custom CSS for Marquee Animation
+    # Custom CSS
     custom_css = """
-    @keyframes marquee {
-        0% { transform: translateX(0%); }
-        100% { transform: translateX(-50%); }
-    }
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
 
-    .animate-marquee {
-        display: inline-block;
-        animation: marquee 10s linear infinite;
-        white-space: nowrap;
-        width: max-content;
-    }
-    """
+        .animate-marquee {
+            display: inline-block;
+            animation: marquee 10s linear infinite;
+            white-space: nowrap;
+            width: max-content;
+        }
+
+        body {
+            background-color: #0f172a !important;
+            color: #f8fafc !important;
+        }
+
+        .dark .text-blue-100 {
+            color: #e0f2fe !important;
+        }
+
+        .bg-blue-600/90 {
+            background-color: #1e40af !important;
+        }
+        
+        .github-triangle-layout {
+            position: relative;
+            margin-top: 4rem;
+        }
+
+        .github-triangle-layout::after {
+            content: '';
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-bottom: 30px solid #1e293b;
+            
+        }
+        
+        /* Supprime les bordures des composants Card */
+        .card {
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+    /* Supprime les bordures des images */
+        img {
+            border: none !important;
+            outline: none !important;
+        }
+        """
     custom_style = Style(custom_css)
 
+    # Navigation
     # Navigation (Updated Design)
     nav = NavBar(
         Container(
             DivFullySpaced(
 
                 DivHStacked(
-                    A("Work", href="#work", cls="text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-blue-500/20"),
-                    A("About", href="#about", cls="text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-blue-500/20"),
-                    A("Contact", href="#contact", cls="text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-blue-500/20"),
+                    A("Work", href="#work",
+                      cls="text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-blue-500/20"),
+                    A("About", href="#about",
+                      cls="text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-blue-500/20"),
+                    A("Contact", href="#contact",
+                      cls="text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-blue-500/20"),
                     cls="gap-2"
                 ),
                 cls="py-4 flex items-center justify-between"
@@ -60,28 +109,31 @@ def index():
         )
     )
 
-
     # Projects Section (With Animated Cards)
     projects = Section(
         Container(
             DivCentered(
-                H2("Projects", cls="text-4xl font-semibold mb-12 animate__animated animate__fadeIn"),
+                H2("Projects", cls="text-4xl font-semibold mb-12 animate__animated animate__fadeIn text-slate-100"),
                 Grid(
                     Card(
                         PicSumImg(800, 600, blur=1, grayscale=True),
                         CardBody(
-                            H3("Vision Pro Experience", cls="text-2xl font-medium mb-2"),
-                            P("Spatial computing interface (because flat screens are so 2022).", cls=TextPresets.muted_sm.value)
+                            H3("Vision Pro Experience", cls="text-2xl font-medium mb-2 text-slate-100"),
+                            P("Spatial computing interface...",
+                              cls="text-slate-400 text-sm")
                         ),
-                        cls="hover:scale-[1.01] transition-transform hover:shadow-2xl animate__animated animate__fadeInLeft"
+                        cls="hover:scale-[1.01] transition-transform hover:shadow-2xl animate__animated animate__fadeInLeft bg-slate-800/50 backdrop-blur-sm border-0"
+                        # ← border-0 ici
                     ),
                     Card(
                         PicSumImg(800, 600, blur=1),
                         CardBody(
-                            H3("iOS App Redesign", cls="text-2xl font-medium mb-2"),
-                            P("Mobile interface overhaul (because users deserve better than spaghetti code).", cls=TextPresets.muted_sm.value)
+                            H3("iOS App Redesign", cls="text-2xl font-medium mb-2 text-slate-100"),
+                            P("Mobile interface overhaul...",
+                              cls="text-slate-400 text-sm")
                         ),
-                        cls="hover:scale-[1.01] transition-transform hover:shadow-2xl animate__animated animate__fadeInRight"
+                        cls="hover:scale-[1.01] transition-transform hover:shadow-2xl animate__animated animate__fadeInRight bg-slate-800/50 backdrop-blur-sm border-0"
+                        # ← border-0 ici
                     ),
                     cls="grid grid-cols-1 md:grid-cols-2 gap-8"
                 ),
@@ -95,13 +147,13 @@ def index():
     about = Section(
         Container(
             DivCentered(
-                H2("About Me", cls="text-4xl font-semibold mb-12 animate__animated animate__fadeIn"),
+                H2("About Me", cls="text-4xl font-semibold mb-12 animate__animated animate__fadeIn text-slate-100"),
                 P("""
                     I’m a Computer Science graduate from UCAO in Cotonou. Currently, I work as a freelance Software Developer and 
                     actively contribute to various open-source projects to enhance my skills in full-stack development and cloud technologies. 
                     Outside of coding, I enjoy playing basketball, listening to music, and traveling. 
                     Fun fact: I once spent 3 hours debugging only to realize I forgot to save the file. 😅
-                """, cls="text-xl text-center max-w-3xl leading-relaxed " + TextPresets.muted_lg.value + " animate__animated animate__fadeInUp"),
+                """, cls="text-xl text-center max-w-3xl leading-relaxed text-slate-300 animate__animated animate__fadeInUp"),
                 DivHStacked(
                     Button("Resume", href="https://drive.google.com/drive/folders/1lI8KVnN6aZ6uaj7JpwG91GhEB3we0iIX?usp=drive_link", cls="text-lg bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 rounded-lg transition-colors animate__animated animate__fadeInLeft"),
                     Button("LinkedIn", href="https://www.linkedin.com/in/chilavert-n-dah-ab5779272/", cls="text-lg bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 rounded-lg transition-colors animate__animated animate__fadeInUp"),
@@ -146,19 +198,33 @@ def index():
     github_stats = Section(
         Container(
             DivCentered(
-                H2("GitHub Stats (Proof I Actually Code)", cls="text-4xl font-semibold mb-12 animate__animated animate__fadeIn"),
+                H2("GitHub Stats (Proof I Actually Code)",
+                   cls="text-4xl font-semibold mb-12 animate__animated animate__fadeIn text-slate-100"),
                 Div(
-                    Img(src="https://github-readme-streak-stats.herokuapp.com?user=99ch&theme=github-dark-blue", cls="w-full mb-8 rounded-lg animate__animated animate__fadeInLeft"),
-                    Img(src="https://github-readme-stats.vercel.app/api?username=99ch&show_icons=true&theme=github_dark&hide_border=True", cls="w-full mb-8 rounded-lg animate__animated animate__fadeInRight"),
-                    Img(src="https://github-readme-stats.vercel.app/api/top-langs/?username=99ch&layout=compact&theme=github_dark&hide_border=True&langs_count=10", cls="w-full rounded-lg animate__animated animate__fadeInUp"),
-                    cls="grid grid-cols-1 md:grid-cols-2 gap-8"
+                    # Top stat (centré)
+                    Img(src="https://github-readme-streak-stats.herokuapp.com?user=99ch&theme=github-dark-blue&hide_border=True&background=0f172a",
+                        cls="w-full mb-8 rounded-lg animate__animated animate__fadeInDown"),
+
+                    # Bottom stats (disposition triangulaire)
+                    Grid(
+                        Img(src="https://github-readme-stats.vercel.app/api/top-langs/?username=99ch&layout=compact&theme=github_dark&hide_border=True&langs_count=10&bg_color=0f172a&height=300",
+                            cls=" rounded-lg animate__animated animate__fadeInRight"),
+
+                        Div(
+                            Img(src="https://github-readme-stats.vercel.app/api?username=99ch&show_icons=true&theme=github_dark&hide_border=True&bg_color=0f172a&height=300",
+                                cls="w-full h-full rounded-lg animate__animated animate__fadeInRight object-contain"),
+                            cls="h-full"
+                        ),
+
+                        cls="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch h-full"
+                    ),
+                    cls="github-triangle-layout flex flex-col gap-12 h-full"
                 ),
                 cls="py-32",
                 id="github"
             )
         )
     )
-
     # Contact Section (With Animated Form)
     contact = Section(
     Container(
@@ -202,15 +268,18 @@ def index():
 
     return Titled(
         animate_css,
-        custom_style,  # Include custom CSS
+        custom_style,
         nav,
-        hero,
-        projects,
-        about,
-        skills,
-        github_stats,
-        contact,
-        footer,
+        Div(  # Ajouter un conteneur global avec classes Tailwind
+            hero,
+            projects,
+            about,
+            skills,
+            github_stats,
+            contact,
+            footer,
+            cls="dark bg-slate-900 text-slate-100"  # Couleurs forcées
+        )
     )
 
 serve()
