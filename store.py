@@ -106,7 +106,7 @@ def index():
             width: 100%;
             z-index: 1000;
             transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
-
+            padding: 0 1.5rem; /* Ajout de marge sur les bords */
         }
 
         .nav-scrolled {
@@ -114,8 +114,75 @@ def index():
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
 
+        /* Logo navbar */
+        .nav-logo {
+            height: 40px;
+            width: auto;
+        }
+
+        /* Style du bouton hamburger */
+        .hamburger-button {
+            display: none; /* Caché par défaut */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            padding: 5px;
+            border-radius: 5px;
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        /* Afficher uniquement sur mobile */
+        @media (max-width: 767px) {
+            .hamburger-button {
+                display: flex;
+            }
+        }
+
+        .hamburger-button:hover {
+            background-color: rgba(59, 130, 246, 0.2);
+        }
+
+        .hamburger-line {
+            width: 24px;
+            height: 2px;
+            background-color: white;
+            margin: 3px 0;
+            transition: all 0.3s ease;
+        }
+
         body {
             padding-top: 64px;
+        }
+
+        /* Contact section with logo background */
+        .contact-section {
+            position: relative;
+        }
+
+        .contact-section::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            background-image: url('./image/logo.png');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.5;
+            z-index: 0;
+        }
+
+        .contact-content {
+            position: relative;
+            z-index: 1;
         }
 
         @media (max-width: 768px) {
@@ -220,8 +287,12 @@ def index():
     nav = Div(
         Container(
             DivFullySpaced(
-                # Logo/Brand on the left
-                A("CN", href="#", cls="text-xl font-bold text-white"),
+                # Logo/Brand on the left - remplacé par l'image
+                A(
+                    Img(src="./image/logo.png", cls="nav-logo", alt="Logo"),
+                    href="#",
+                    cls="flex items-center"
+                ),
 
                 # Desktop menu (hidden on mobile)
                 Div(
@@ -237,12 +308,15 @@ def index():
                     cls="hidden md:flex"  # Hide on mobile, show on medium screens and up
                 ),
 
-                # Hamburger menu button (visible only on mobile)
+                # Bouton hamburger - maintenant correctement caché sur desktop
                 Button(
-                    Span(cls="block h-0.5 w-6 bg-white mb-1"),
-                    Span(cls="block h-0.5 w-6 bg-white mb-1"),
-                    Span(cls="block h-0.5 w-6 bg-white"),
-                    cls="md:hidden focus:outline-none",
+                    Div(
+                        Span(cls="hamburger-line"),
+                        Span(cls="hamburger-line"),
+                        Span(cls="hamburger-line"),
+                        cls="flex flex-col justify-center items-center"
+                    ),
+                    cls="hamburger-button focus:outline-none",
                     id="mobile-menu-button"
                 ),
 
@@ -396,7 +470,7 @@ def index():
         )
     )
 
-    # Contact Section (With Animated Form)
+    # Contact Section with logo in background
     contact = Section(
         Container(
             DivCentered(
@@ -405,10 +479,11 @@ def index():
                   cls="text-xl text-center mb-8 animate__animated animate__fadeInUp"),
                 A("Send Email", href="mailto:chilavertndah99@gmail.com",
                   cls="text-lg bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 rounded-lg transition-colors animate__animated animate__fadeIn"),
-                cls="py-32",
+                cls="py-32 contact-content",
                 id="contact"
             )
-        )
+        ),
+        cls="contact-section"
     )
 
     # FIXED Footer with marquee animation (preserving all original elements)
