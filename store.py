@@ -8,6 +8,7 @@ hdrs = (
 
 app, rt = fast_app(hdrs=hdrs)
 
+
 @rt
 def index():
     # CSS animations
@@ -21,6 +22,10 @@ def index():
             100% { transform: translateX(-50%); }
         }
 
+        html {
+            overflow-x: hidden;
+        }
+
         .animate-marquee {
             display: inline-block;
             animation: marquee 10s linear infinite;
@@ -28,7 +33,7 @@ def index():
             width: max-content;
         }
 
-        /* Appliquer le motif de cahier au body entier */
+        /* Effet de papier ligné */
         body {
             background-color: #0f172a !important;
             color: #f8fafc !important;
@@ -39,85 +44,210 @@ def index():
             background-position: 0 0 !important;
         }
 
-        /* S'assurer que les éléments sur le fond sont toujours visibles */
-        .dark.bg-slate-900 {
-            background-color: transparent !important; /* Rendre transparent pour voir le fond */
-        }
-
-        /* Pour la NavBar, ajouter un fond semi-transparent pour que les lignes soient visibles */
-        .backdrop-blur-lg.bg-blue-600\/90 {
-            background-color: rgba(30, 64, 175, 0.85) !important; /* Un peu plus transparent */
-        }
-
-        .dark .text-blue-100 {
-            color: #e0f2fe !important;
-        }
-
-        .github-triangle-layout {
+        /* Hero Section */
+        .hero-bg {
             position: relative;
-            margin-top: 4rem;
+            min-height: 100vh;
+            margin-top: -64px;
+            padding-top: 64px;
+            width: 100vw;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
         }
 
-        .github-triangle-layout::after {
+        .hero-bg::before {
             content: '';
             position: absolute;
-            top: -30px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-left: 20px solid transparent;
-            border-right: 20px solid transparent;
-            border-bottom: 30px solid #1e293b;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                url('image/background.png');
+            background-size: cover;
+            background-position: center top;
+            background-repeat: no-repeat;
+            z-index: 0;
+            filter: saturate(0.8) brightness(0.9);
+            /* Add a dark blue overlay */
+            background-color: rgba(15, 23, 42, 0.7);
+            background-blend-mode: overlay;
         }
 
-        /* Supprime les bordures des composants Card */
-        .card {
-            border: none !important;
-            box-shadow: none !important;
+        @media (max-width: 768px) {
+            .hero-bg::before {
+                background-position: center top 20%; /* Ajustement mobile */
+            }
         }
 
-        /* Supprime les bordures des images */
-        img {
-            border: none !important;
-            outline: none !important;
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            max-width: 1200px;
+            margin: 0 auto;
         }
+
+        /* Transparence pour voir les rayures */
+        .dark.bg-slate-900 {
+            background-color: transparent !important;
+        }
+
+        /* Navbar */
+        .fixed-navbar {
+            position: fixed !important;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+           
+        }
+
+        .nav-scrolled {
+            background-color: rgba(15, 23, 42, 0.95) !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        body {
+            padding-top: 64px;
+        }
+
+        @media (max-width: 768px) {
+            .hero-bg::before {
+                background-position: 60% center;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem !important;
+            }
+        }
+
+        .full-bleed-section {
+        width: 100vw;
+        position: relative;
+        left: 50%;
+        right: 50%;
+        margin-left: -50vw;
+        margin-right: -50vw;
+        overflow: hidden;
+    }
+
+    @media (max-width: 768px) {
+        .full-bleed-section {
+            margin-left: -1rem;
+            margin-right: -1rem;
+        }
+    }
     """
-    custom_style = Style(custom_css)
+
+    custom_style = Style(custom_css + """
+        </style>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const navbar = document.querySelector('.fixed-navbar');
+                let lastScrollY = window.scrollY;
+
+                navbar && window.addEventListener('scroll', function() {
+                    const currentScrollY = window.scrollY;
+
+                    if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                        navbar.style.transform = 'translateY(-100%)';
+                    } else {
+                        navbar.style.transform = 'translateY(0)';
+                        navbar.classList.toggle('nav-scrolled', currentScrollY > 50);
+                    }
+                    lastScrollY = currentScrollY;
+                });
+
+                // Mobile menu toggle
+                const mobileMenuButton = document.getElementById('mobile-menu-button');
+                const mobileMenu = document.getElementById('mobile-menu');
+
+                mobileMenuButton && mobileMenuButton.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                });
+
+                // Close mobile menu when clicking on a link
+                const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+                mobileMenuLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        mobileMenu.classList.add('hidden');
+                    });
+                });
+            });
+        </script>
+        <style>
+        """)
 
     # Navigation
-    # Navigation (Updated Design)
-    nav = NavBar(
+    nav = Div(
         Container(
             DivFullySpaced(
+                # Logo/Brand on the left
+                A("CN", href="#", cls="text-xl font-bold text-white"),
 
-                DivHStacked(
-                    A("Work", href="#work",
-                      cls="text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-blue-500/20"),
-                    A("About", href="#about",
-                      cls="text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-blue-500/20"),
-                    A("Contact", href="#contact",
-                      cls="text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-blue-500/20"),
-                    cls="gap-2"
+                # Desktop menu (hidden on mobile)
+                Div(
+                    DivHStacked(
+                        A("Work", href="#work",
+                          cls="text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-blue-500/20"),
+                        A("About", href="#about",
+                          cls="text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-blue-500/20"),
+                        A("Contact", href="#contact",
+                          cls="text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-blue-500/20"),
+                        cls="gap-2"
+                    ),
+                    cls="hidden md:flex"  # Hide on mobile, show on medium screens and up
                 ),
+
+                # Hamburger menu button (visible only on mobile)
+                Button(
+                    Span(cls="block h-0.5 w-6 bg-white mb-1"),
+                    Span(cls="block h-0.5 w-6 bg-white mb-1"),
+                    Span(cls="block h-0.5 w-6 bg-white"),
+                    cls="md:hidden focus:outline-none",
+                    id="mobile-menu-button"
+                ),
+
                 cls="py-4 flex items-center justify-between"
             ),
-            cls="backdrop-blur-lg bg-blue-600/90 sticky top-0 border-b border-blue-500/20"
-        )
+            cls="border-b smax-w-7xl mx-auto px-4"
+        ),
+
+        # Mobile menu (initially hidden)
+        Div(
+            Div(
+                A("Work", href="#work",
+                  cls="block text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-3 border-b border-blue-500/20"),
+                A("About", href="#about",
+                  cls="block text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-3 border-b border-blue-500/20"),
+                A("Contact", href="#contact",
+                  cls="block text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-3"),
+                cls="py-2"
+            ),
+            cls="hidden bg-slate-900 md:hidden",
+            id="mobile-menu"
+        ),
+
+        cls="fixed-navbar"
     )
 
-    # Hero Section (With Profile Picture and Animated Title)
+    # Hero Section
     hero = Section(
         DivCentered(
-            # Add a clickable profile picture
-            Img(src="./image/logo.png",
-                cls="h-32 w-32 rounded-full cursor-pointer profile-pic animate__animated animate__bounce"),
             H1("Hello, I'm Chilavert N'dah",
                cls="text-6xl font-bold mb-6 text-center text-white animate__animated animate__fadeInDown"),
             P("Software Developer ", cls="text-xl text-blue-100 mb-8 animate__animated animate__fadeInUp"),
-            Button("View My Work",
-                   cls="text-lg bg-white text-blue-600 hover:bg-blue-50 px-6 py-3 rounded-lg transition-colors animate__animated animate__fadeIn",
-                   href="#work"),
-            cls="min-h-screen flex items-center justify-center py-20 "
-        )
+
+            cls="min-h-screen flex items-center justify-center py-20 hero-content"
+        ),
+        cls="hero-bg",
+        container=False
     )
 
     # Projects Section (With Animated Cards)
@@ -180,7 +310,7 @@ def index():
 
                         DivHStacked(
                             Button("Resume", href="...",
-                                   cls="text-lg bg-slate-700 text-slate-100 hover:bg-slate-600 px-6 py-3 rounded-lg transition-colors animate__animated animate__fadeInLeft"),
+                                   cls="text-lg bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 rounded-lg transition-colors animate__animated animate__fadeInLeft"),
                         ),
                         cls="flex flex-col items-start"
                     ),
@@ -197,22 +327,37 @@ def index():
     skills = Section(
         Container(
             DivCentered(
-                H2("Things I Can Do Without Googling... Mostly", cls="text-4xl font-semibold mb-12 animate__animated animate__fadeIn"),
+                H2("Things I Can Do Without Googling... Mostly",
+                   cls="text-4xl font-semibold mb-12 animate__animated animate__fadeIn"),
                 Div(
-                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/python/python.png", cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
-                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/django/django.png", cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
-                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/cpp/cpp.png", cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
-                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/html/html.png", cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
-                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/css/css.png", cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
-                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/bootstrap/bootstrap.png", cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
-                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/javascript/javascript.png", cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
-                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/firebase/firebase.png", cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
-                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/dart/dart.png", cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
-                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/flutter/flutter.png", cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
-                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/latex/latex.png", cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
-                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/git/git.png", cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
-                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/tensorflow/tensorflow.png", cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
-                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/visual-studio-code/visual-studio-code.png", cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
+                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/python/python.png",
+                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
+                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/django/django.png",
+                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
+                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/cpp/cpp.png",
+                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
+                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/html/html.png",
+                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
+                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/css/css.png",
+                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
+                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/bootstrap/bootstrap.png",
+                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
+                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/javascript/javascript.png",
+                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
+                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/firebase/firebase.png",
+                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
+                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/dart/dart.png",
+                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
+                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/flutter/flutter.png",
+                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
+                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/latex/latex.png",
+                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
+                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/git/git.png",
+                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
+                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/tensorflow/tensorflow.png",
+                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
+                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/visual-studio-code/visual-studio-code.png",
+                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
                     cls="flex flex-wrap justify-center gap-4"
                 ),
                 cls="py-32 ",
@@ -254,50 +399,50 @@ def index():
     )
     # Contact Section (With Animated Form)
     contact = Section(
-    Container(
-        DivCentered(
-            H2("Let's Connect", cls="text-4xl font-semibold mb-12 animate__animated animate__fadeIn"),
-            P("Feel free to reach out to me via email.", cls="text-xl text-center mb-8 animate__animated animate__fadeInUp"),
-            A("Send Email", href="mailto:chilavertndah99@gmail.com", cls="text-lg bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 rounded-lg transition-colors animate__animated animate__fadeIn"),
-            cls="py-32",
-            id="contact"
+        Container(
+            DivCentered(
+                H2("Let's Connect", cls="text-4xl font-semibold mb-12 animate__animated animate__fadeIn"),
+                P("Feel free to reach out to me via email.",
+                  cls="text-xl text-center mb-8 animate__animated animate__fadeInUp"),
+                A("Send Email", href="mailto:chilavertndah99@gmail.com",
+                  cls="text-lg bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 rounded-lg transition-colors animate__animated animate__fadeIn"),
+                cls="py-32",
+                id="contact"
+            )
         )
     )
-)
 
     # Footer (With Continuous Marquee Animation)
     footer = Section(
         Container(
             DivCentered(
-                Divider(cls="mb-12"),
+                Divider(cls="mb-12 border-blue-500/20"),
                 DivHStacked(
-                    A(Img(src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg", cls="h-8 w-8 animate__animated animate__bounce"), href="https://www.linkedin.com/in/chilavert-n-dah-ab5779272/"),
+                    A(Img(
+                        src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg",
+                        cls="h-8 w-8 animate__animated animate__bounce"),
+                        href="https://www.linkedin.com/in/chilavert-n-dah-ab5779272/"),
                     cls="gap-4 mb-6"
                 ),
-                # Marquee Container
                 Div(
-                    # Original Text
-                    P(
-                        "© 2025 Chilavert N'dah",
-                        cls="text-9xl font-bold whitespace-nowrap inline-block animate-marquee",
-                    ),
-                    # Duplicate Text
-                    P(
-                        "© 2025 Chilavert N'dah",
-                        cls="text-9xl font-bold whitespace-nowrap inline-block animate-marquee",
-                    ),
-                    cls="whitespace-nowrap overflow-hidden w-full",  # Ensure the container hides overflow
+                    P("© 2025 Chilavert N'dah",
+                      cls="text-9xl font-bold whitespace-nowrap inline-block animate-marquee"),
+                    P("© 2025 Chilavert N'dah",
+                      cls="text-9xl font-bold whitespace-nowrap inline-block animate-marquee"),
+                    cls="whitespace-nowrap overflow-hidden w-full"
                 ),
-                cls=" text-center",
+                cls="text-center"
             )
-        )
+        ),
+        cls="full-bleed-section",  # Ajoutez un fond si nécessaire
+        container=False
     )
 
     return Titled(
         animate_css,
         custom_style,
         nav,
-        Div(  # Ajouter un conteneur global avec classes Tailwind
+        Div(
             hero,
             projects,
             about,
@@ -308,5 +453,6 @@ def index():
             cls="dark bg-slate-900 text-slate-100"  # Couleurs forcées
         )
     )
+
 
 serve()
