@@ -35,6 +35,7 @@ def index():
 
         /* Effet de papier ligné */
         body {
+            overflow-x: hidden; /* Added to prevent horizontal scroll */
             background-color: #0f172a !important;
             color: #f8fafc !important;
             background-image: 
@@ -105,7 +106,7 @@ def index():
             width: 100%;
             z-index: 1000;
             transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
-           
+
         }
 
         .nav-scrolled {
@@ -128,21 +129,52 @@ def index():
         }
 
         .full-bleed-section {
-        width: 100vw;
-        position: relative;
-        left: 50%;
-        right: 50%;
-        margin-left: -50vw;
-        margin-right: -50vw;
-        overflow: hidden;
-    }
-
-    @media (max-width: 768px) {
-        .full-bleed-section {
-            margin-left: -1rem;
-            margin-right: -1rem;
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+            overflow: hidden;
         }
-    }
+
+        /* Fix footer overflow */
+        .footer-container {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Fix marquee container */
+        .footer-marquee-container {
+            width: 100%;
+            overflow: hidden;
+            text-align: center;
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Fixed marquee wrapper */
+        .footer-marquee-wrapper {
+            display: inline-flex;
+            position: relative;
+            white-space: nowrap;
+            width: auto;
+        }
+
+        /* Responsive text sizes for footer */
+        @media (max-width: 768px) {
+            .footer-marquee-text {
+                font-size: 4rem !important; /* Smaller text on mobile */
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .footer-marquee-text {
+                font-size: 6rem !important; /* Medium text on tablet */
+            }
+        }
     """
 
     custom_style = Style(custom_css + """
@@ -216,7 +248,7 @@ def index():
 
                 cls="py-4 flex items-center justify-between"
             ),
-            cls="border-b smax-w-7xl mx-auto px-4"
+            cls="max-w-7xl mx-auto px-4"  # Removed border-b class here
         ),
 
         # Mobile menu (initially hidden)
@@ -248,40 +280,6 @@ def index():
         ),
         cls="hero-bg",
         container=False
-    )
-
-    # Projects Section (With Animated Cards)
-    projects = Section(
-        Container(
-            DivCentered(
-                H2("Projects", cls="text-4xl font-semibold mb-12 animate__animated animate__fadeIn text-slate-100"),
-                Grid(
-                    Card(
-                        PicSumImg(800, 600, blur=1, grayscale=True),
-                        CardBody(
-                            H3("Vision Pro Experience", cls="text-2xl font-medium mb-2 text-slate-100"),
-                            P("Spatial computing interface...",
-                              cls="text-slate-400 text-sm")
-                        ),
-                        cls="hover:scale-[1.01] transition-transform hover:shadow-2xl animate__animated animate__fadeInLeft bg-slate-800/50 backdrop-blur-sm border-0"
-                        # ← border-0 ici
-                    ),
-                    Card(
-                        PicSumImg(800, 600, blur=1),
-                        CardBody(
-                            H3("iOS App Redesign", cls="text-2xl font-medium mb-2 text-slate-100"),
-                            P("Mobile interface overhaul...",
-                              cls="text-slate-400 text-sm")
-                        ),
-                        cls="hover:scale-[1.01] transition-transform hover:shadow-2xl animate__animated animate__fadeInRight bg-slate-800/50 backdrop-blur-sm border-0"
-                        # ← border-0 ici
-                    ),
-                    cls="grid grid-cols-1 md:grid-cols-2 gap-8"
-                ),
-                cls="py-32",
-                id="work"
-            )
-        )
     )
 
     about = Section(
@@ -397,6 +395,7 @@ def index():
             )
         )
     )
+
     # Contact Section (With Animated Form)
     contact = Section(
         Container(
@@ -412,29 +411,38 @@ def index():
         )
     )
 
-    # Footer (With Continuous Marquee Animation)
+    # FIXED Footer with marquee animation (preserving all original elements)
     footer = Section(
-        Container(
-            DivCentered(
-                Divider(cls="mb-12 border-blue-500/20"),
-                DivHStacked(
-                    A(Img(
-                        src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg",
-                        cls="h-8 w-8 animate__animated animate__bounce"),
-                        href="https://www.linkedin.com/in/chilavert-n-dah-ab5779272/"),
-                    cls="gap-4 mb-6"
+        Div(
+            Div(
+                DivCentered(
+                    Divider(cls="mb-12 border-blue-500/20"),
+                    DivHStacked(
+                        A(Img(
+                            src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg",
+                            cls="h-8 w-8 animate__animated animate__bounce"),
+                            href="https://www.linkedin.com/in/chilavert-n-dah-ab5779272/"),
+                        cls="gap-4 mb-6 justify-center"
+                    ),
+                    # Marquee container
+                    Div(
+                        # Marquee wrapper
+                        Div(
+                            P("© 2025 Chilavert N'dah",
+                              cls="footer-marquee-text text-9xl font-bold whitespace-nowrap inline-block animate-marquee"),
+                            P("© 2025 Chilavert N'dah",
+                              cls="footer-marquee-text text-9xl font-bold whitespace-nowrap inline-block animate-marquee"),
+                            cls="footer-marquee-wrapper"
+                        ),
+                        cls="footer-marquee-container w-screen"
+                    ),
+                    cls="py-16"
                 ),
-                Div(
-                    P("© 2025 Chilavert N'dah",
-                      cls="text-9xl font-bold whitespace-nowrap inline-block animate-marquee"),
-                    P("© 2025 Chilavert N'dah",
-                      cls="text-9xl font-bold whitespace-nowrap inline-block animate-marquee"),
-                    cls="whitespace-nowrap overflow-hidden w-full"
-                ),
-                cls="text-center"
-            )
+                cls="w-full"
+            ),
+            cls="footer-container w-full"
         ),
-        cls="full-bleed-section",  # Ajoutez un fond si nécessaire
+        cls="py-0 full-bleed-section",
         container=False
     )
 
@@ -444,13 +452,12 @@ def index():
         nav,
         Div(
             hero,
-            projects,
             about,
             skills,
             github_stats,
             contact,
             footer,
-            cls="dark bg-slate-900 text-slate-100"  # Couleurs forcées
+            cls="dark bg-slate-900 text-slate-100"
         )
     )
 
