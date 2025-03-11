@@ -6,60 +6,22 @@
      </title>
      <meta charset="utf-8">
      <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<script src="https://unpkg.com/htmx.org@2.0.4/dist/htmx.min.js"></script><script src="https://cdn.jsdelivr.net/gh/answerdotai/fasthtml-js@1.0.12/fasthtml.js"></script><script src="https://cdn.jsdelivr.net/gh/answerdotai/surreal@main/surreal.js"></script><script src="https://cdn.jsdelivr.net/gh/gnat/css-scope-inline@main/script.js"></script>     <link rel="stylesheet" href="https://unpkg.com/franken-ui@2.0.0-internal.45/dist/css/core.min.css">
-<script type="module" src="https://unpkg.com/franken-ui@2.0.0-internal.45/dist/js/core.iife.js"></script><script type="module" src="https://unpkg.com/franken-ui@2.0.0-internal.45/dist/js/icon.iife.js"></script><script src="https://cdn.tailwindcss.com"></script><script>
-    tailwind.config = {
-        darkMode: 'selector',
-    }
-    </script><script>
+<script src="https://unpkg.com/htmx.org@2.0.4/dist/htmx.min.js"></script><script src="https://cdn.jsdelivr.net/gh/answerdotai/fasthtml-js@1.0.12/fasthtml.js"></script><script src="https://cdn.jsdelivr.net/gh/answerdotai/surreal@main/surreal.js"></script><script src="https://cdn.jsdelivr.net/gh/gnat/css-scope-inline@main/script.js"></script>     <link rel="stylesheet" href="https://unpkg.com/franken-ui@1.1.0/dist/css/core.min.css">
+<script type="module" src="https://unpkg.com/franken-ui@1.1.0/dist/js/core.iife.js"></script><script type="module" src="https://cdn.jsdelivr.net/gh/answerdotai/monsterui@main/monsterui/icon.iife.js"></script><script src="https://cdn.tailwindcss.com"></script><script>
         const htmlElement = document.documentElement;
         
-          const __FRANKEN__ = JSON.parse(localStorage.getItem("__FRANKEN__") || "{}");
-
-          if (
-            __FRANKEN__.mode === "dark" ||
-            (!__FRANKEN__.mode &&
-              window.matchMedia("(prefers-color-scheme: dark)").matches)
-          ) {
-            htmlElement.classList.add("dark");
-          } else {
-            htmlElement.classList.remove("dark");
-          }
-
+            if (
+                localStorage.getItem("mode") === "dark" ||
+                (!("mode" in localStorage) &&
+                window.matchMedia("(prefers-color-scheme: dark)").matches)
+            ) {
+                htmlElement.classList.add("dark");
+            } else {
+                htmlElement.classList.remove("dark");
+            }
         
-          htmlElement.classList.add("uk-theme-blue");
-          htmlElement.classList.add(__FRANKEN__.theme || "uk-theme-blue");
-          htmlElement.classList.add(__FRANKEN__.radii || "uk-radii-sm");
-          htmlElement.classList.add(__FRANKEN__.shadows || "uk-shadows-sm");
-          htmlElement.classList.add(__FRANKEN__.font || "uk-font-sm");
-    </script>     <style>
-.monster-navbar.navbar-bold a {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.monster-navbar.navbar-bold a.uk-active {
-    transform: scale(1.15) ;
-    font-weight: bold;
-    text-shadow: 0 0 12px rgba(var(--p-rgb), 0.4);
-    letter-spacing: 0.02em;
-    color: hsl(var(--p) / 1);
-}
-.monster-navbar.navbar-underline a.uk-active { position: relative; }
-.monster-navbar.navbar-underline a.uk-active::after {
-    content: &#x27;&#x27;;
-    position: absolute;
-    left: 0;
-    bottom: -2px;
-    width: 100%;
-    height: 2px;
-    background: currentColor;
-    animation: slideIn 0.3s ease forwards;
-}
-@keyframes slideIn {
-    from { transform: scaleX(0); }
-    to { transform: scaleX(1); }
-}
-</style>
-     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daisyui@4.12.22/dist/full.min.css">
+        htmlElement.classList.add(localStorage.getItem("theme") || "uk-theme-blue");
+    </script>     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daisyui@4.12.22/dist/full.min.css">
      <style>
 :root {
   --p: from hsl(var(--primary)) l c h;
@@ -74,144 +36,363 @@
   --erc: from hsl(var(--destructive-foreground)) l c h;
 }
 </style>
-     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
-<script type="module">
-                import katex from 'https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.mjs';
-                import autoRender from 'https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.mjs';
-                const options = {
-                  delimiters: [
-                    {left: '$$', right: '$$', display: true},
-                    {left: '$', right: '$', display: false}
-                  ],
-                  ignoredClasses: ['nomath']
-                };
-
-                document.addEventListener('htmx:load', evt => {
-                  const element = evt.detail.elt || document.body;
-                  autoRender(element,options);
-                });
-                </script>   </head>
+   </head>
    <body class=" bg-background text-foreground">
-<main>       <div class="uk-container uk-container-xl">
+<main>       <div class="uk-container uk-container-xlarge">
          <h1 class="uk-h1 ">
            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
          </h1>
          <style>
-    @keyframes marquee {
-        0% { transform: translateX(0%); }
-        100% { transform: translateX(-50%); }
-    }
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
 
-    .animate-marquee {
-        display: inline-block;
-        animation: marquee 10s linear infinite;
-        white-space: nowrap;
-        width: max-content;
-    }
-    </style>
-         <div>
-           <div class="monster-navbar p-4 navbar-underline">
-             <div class="flex justify-between items-center w-full">
-               <h3 class="uk-h3 "></h3>
-<a class="md:hidden" data-uk-toggle="target: #_5EdFJhECTeGWT6RxYyooHg; cls: hidden"><uk-icon icon="menu" height="30" width="30"></uk-icon></a>               <div class="items-center space-x-4 hidden md:flex">
-                 <div class="uk-container backdrop-blur-lg bg-blue-600/90 sticky top-0 border-b border-blue-500/20">
-                   <div class="flex justify-between items-center py-4 flex items-center justify-between">
-                     <div class="flex flex-row items-center gap-2">
-<a href="#work" class="text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-blue-500/20">Work</a><a href="#about" class="text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-blue-500/20">About</a><a href="#contact" class="text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-blue-500/20">Contact</a>                     </div>
-                   </div>
-                 </div>
-               </div>
-             </div>
-           </div>
-           <div class="flex flex-col items-center justify-center space-y-4 p-4 navbar-underline hidden md:hidden monster-navbar" id="_5EdFJhECTeGWT6RxYyooHg">
-             <div class="uk-container backdrop-blur-lg bg-blue-600/90 sticky top-0 border-b border-blue-500/20">
-               <div class="flex justify-between items-center py-4 flex items-center justify-between">
-                 <div class="flex flex-row items-center gap-2">
+        html {
+            overflow-x: hidden;
+        }
+
+        .animate-marquee {
+            display: inline-block;
+            animation: marquee 10s linear infinite;
+            white-space: nowrap;
+            width: max-content;
+        }
+
+        /* Effet de papier ligné */
+        body {
+            overflow-x: hidden; /* Added to prevent horizontal scroll */
+            background-color: #0f172a !important;
+            color: #f8fafc !important;
+            background-image: 
+                linear-gradient(rgba(148, 163, 184, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(148, 163, 184, 0.1) 1px, transparent 1px) !important;
+            background-size: 100% 24px, 24px 100% !important;
+            background-position: 0 0 !important;
+        }
+
+        /* Hero Section */
+        .hero-bg {
+            position: relative;
+            min-height: 100vh;
+            margin-top: -64px;
+            padding-top: 64px;
+            width: 100vw;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+        }
+
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                url('image/background.png');
+            background-size: cover;
+            background-position: center top;
+            background-repeat: no-repeat;
+            z-index: 0;
+            filter: saturate(0.8) brightness(0.9);
+            /* Add a dark blue overlay */
+            background-color: rgba(15, 23, 42, 0.7);
+            background-blend-mode: overlay;
+        }
+
+        @media (max-width: 768px) {
+            .hero-bg::before {
+                background-position: center top 20%; /* Ajustement mobile */
+            }
+        }
+
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Transparence pour voir les rayures */
+        .dark.bg-slate-900 {
+            background-color: transparent !important;
+        }
+
+        /* Navbar */
+        .fixed-navbar {
+            position: fixed !important;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+            padding: 0 1.5rem; /* Ajout de marge sur les bords */
+        }
+
+        .nav-scrolled {
+            background-color: rgba(15, 23, 42, 0.95) !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        /* Logo navbar */
+        .nav-logo {
+            height: 40px;
+            width: auto;
+        }
+
+        /* Style du bouton hamburger */
+        .hamburger-button {
+            display: none; /* Caché par défaut */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            padding: 5px;
+            border-radius: 5px;
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        /* Afficher uniquement sur mobile */
+        @media (max-width: 767px) {
+            .hamburger-button {
+                display: flex;
+            }
+        }
+
+        .hamburger-button:hover {
+            background-color: rgba(59, 130, 246, 0.2);
+        }
+
+        .hamburger-line {
+            width: 24px;
+            height: 2px;
+            background-color: white;
+            margin: 3px 0;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            padding-top: 64px;
+        }
+
+        /* Contact section with logo background */
+        .contact-section {
+            position: relative;
+        }
+
+        .contact-section::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            background-image: url('./image/logo.png');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.5;
+            z-index: 0;
+        }
+
+        .contact-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            .hero-bg::before {
+                background-position: 60% center;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem !important;
+            }
+        }
+
+        .full-bleed-section {
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+            overflow: hidden;
+        }
+
+        /* Fix footer overflow */
+        .footer-container {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Fix marquee container */
+        .footer-marquee-container {
+            width: 100%;
+            overflow: hidden;
+            text-align: center;
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Fixed marquee wrapper */
+        .footer-marquee-wrapper {
+            display: inline-flex;
+            position: relative;
+            white-space: nowrap;
+            width: auto;
+        }
+
+        /* Responsive text sizes for footer */
+        @media (max-width: 768px) {
+            .footer-marquee-text {
+                font-size: 4rem !important; /* Smaller text on mobile */
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .footer-marquee-text {
+                font-size: 6rem !important; /* Medium text on tablet */
+            }
+        }
+    
+        </style>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const navbar = document.querySelector('.fixed-navbar');
+                let lastScrollY = window.scrollY;
+
+                navbar && window.addEventListener('scroll', function() {
+                    const currentScrollY = window.scrollY;
+
+                    if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                        navbar.style.transform = 'translateY(-100%)';
+                    } else {
+                        navbar.style.transform = 'translateY(0)';
+                        navbar.classList.toggle('nav-scrolled', currentScrollY > 50);
+                    }
+                    lastScrollY = currentScrollY;
+                });
+
+                // Mobile menu toggle
+                const mobileMenuButton = document.getElementById('mobile-menu-button');
+                const mobileMenu = document.getElementById('mobile-menu');
+
+                mobileMenuButton && mobileMenuButton.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                });
+
+                // Close mobile menu when clicking on a link
+                const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+                mobileMenuLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        mobileMenu.classList.add('hidden');
+                    });
+                });
+            });
+        </script>
+        <style>
+        </style>
+         <div class="fixed-navbar">
+           <div class="uk-container max-w-7xl mx-auto px-4">
+             <div class="uk-flex uk-flex-between uk-flex-middle py-4 flex items-center justify-between">
+<a href="#" class="flex items-center"><img src="./image/logo.png" alt="Logo" class="nav-logo"></a>               <div class="hidden md:flex">
+                 <div class="uk-flex uk-flex-row uk-flex-middle gap-2">
 <a href="#work" class="text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-blue-500/20">Work</a><a href="#about" class="text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-blue-500/20">About</a><a href="#contact" class="text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-blue-500/20">Contact</a>                 </div>
                </div>
-             </div>
+<button type="submit" id="mobile-menu-button" class="uk-button hamburger-button focus:outline-none" name="mobile-menu-button">                 <div class="flex flex-col justify-center items-center">
+<span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span>                 </div>
+</button>             </div>
+           </div>
+           <div id="mobile-menu" class="hidden bg-slate-900 md:hidden">
+             <div class="py-2">
+<a href="#work" class="block text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-3 border-b border-blue-500/20">Work</a><a href="#about" class="block text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-3 border-b border-blue-500/20">About</a><a href="#contact" class="block text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-3">Contact</a>             </div>
            </div>
          </div>
-         <div class="uk-section ">
-           <div class="flex flex-col items-center justify-center min-h-screen flex items-center justify-center py-20 ">
-<img src="./image/logo.png" class="h-32 w-32 rounded-full cursor-pointer profile-pic animate__animated animate__bounce">             <h1 class="uk-h1 text-6xl font-bold mb-6 text-center text-white animate__animated animate__fadeInDown">Hello, I&#x27;m Chilavert N&#x27;dah</h1>
-             <p class="text-xl text-blue-100 mb-8 animate__animated animate__fadeInUp">Software Developer </p>
-<button href="#work" type="submit" class="uk-btn text-lg bg-white text-blue-600 hover:bg-blue-50 px-6 py-3 rounded-lg transition-colors animate__animated animate__fadeIn">View My Work</button>           </div>
-         </div>
-         <div class="uk-section ">
-           <div class="uk-container mt-5 uk-container-xl">
-             <div class="flex flex-col items-center justify-center py-32" id="work">
-               <h2 class="uk-h2 text-4xl font-semibold mb-12 animate__animated animate__fadeIn">Projects</h2>
-               <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 grid grid-cols-1 md:grid-cols-2 gap-8">
-                 <div class="uk-card hover:scale-[1.01] transition-transform hover:shadow-2xl animate__animated animate__fadeInLeft">
-                   <div class="uk-card-body space-y-6">
-<img src="https://picsum.photos/600/800?grayscale&amp;blur=1" loading="lazy">                     <div class="uk-card-body ">
-                       <h3 class="uk-h3 text-2xl font-medium mb-2">Vision Pro Experience</h3>
-                       <p class="text-gray-500 dark:text-gray-200 text-sm">Spatial computing interface (because flat screens are so 2022).</p>
-                     </div>
-                   </div>
-                 </div>
-                 <div class="uk-card hover:scale-[1.01] transition-transform hover:shadow-2xl animate__animated animate__fadeInRight">
-                   <div class="uk-card-body space-y-6">
-<img src="https://picsum.photos/600/800?blur=1" loading="lazy">                     <div class="uk-card-body ">
-                       <h3 class="uk-h3 text-2xl font-medium mb-2">iOS App Redesign</h3>
-                       <p class="text-gray-500 dark:text-gray-200 text-sm">Mobile interface overhaul (because users deserve better than spaghetti code).</p>
-                     </div>
+         <div class="dark bg-slate-900 text-slate-100">
+           <div class="uk-section hero-bg">
+             <div class="uk-flex uk-flex-column uk-flex-middle uk-flex-center min-h-screen flex items-center justify-center py-20 hero-content">
+               <h1 class="uk-h1 text-6xl font-bold mb-6 text-center text-white animate__animated animate__fadeInDown">Hello, I&#x27;m Chilavert N&#x27;dah</h1>
+               <p class="text-xl text-blue-100 mb-8 animate__animated animate__fadeInUp">Software Developer </p>
+             </div>
+           </div>
+           <div class="uk-section ">
+             <div class="uk-container mt-5 uk-container-xlarge">
+               <div class="uk-flex uk-flex-column uk-flex-middle uk-flex-center py-32" id="about">
+                 <h2 class="uk-h2 text-4xl font-semibold mb-12 animate__animated animate__fadeIn text-slate-100">About Me</h2>
+                 <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                   <div class="flex items-center justify-center">
+<img src="image/full_profil.png" class="w-full h-auto rounded-2xl shadow-2xl border-4 border-slate-700/20 animate__animated animate__fadeInLeft" style="max-width: 500px;">                   </div>
+                   <div class="flex flex-col items-start">
+                     <p class="text-xl max-w-2xl leading-relaxed text-slate-300 animate__animated animate__fadeInRight mb-12">
+                            I&#x27;m a Computer Science graduate from UCAO in Cotonou. Currently, I work as a freelance Software Developer and 
+                            actively contribute to various open-source projects to enhance my skills in full-stack development and cloud technologies. 
+                            Outside of coding, I enjoy playing basketball, listening to music, and traveling. 
+                            Fun fact: I once spent 3 hours debugging only to realize I forgot to save the file. 😅
+                        </p>
+                     <div class="uk-flex uk-flex-row uk-flex-middle space-x-4">
+<button href="..." type="submit" class="uk-button text-lg bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 rounded-lg transition-colors animate__animated animate__fadeInLeft">Resume</button>                     </div>
                    </div>
                  </div>
                </div>
              </div>
            </div>
-         </div>
-         <div class="uk-section ">
-           <div class="uk-container mt-5 uk-container-xl">
-             <div class="flex flex-col items-center justify-center py-32" id="about">
-               <h2 class="uk-h2 text-4xl font-semibold mb-12 animate__animated animate__fadeIn">About Me</h2>
-               <p class="text-xl text-center max-w-3xl leading-relaxed text-gray-500 dark:text-gray-200 text-lg animate__animated animate__fadeInUp">
-                    I’m a Computer Science graduate from UCAO in Cotonou. Currently, I work as a freelance Software Developer and 
-                    actively contribute to various open-source projects to enhance my skills in full-stack development and cloud technologies. 
-                    Outside of coding, I enjoy playing basketball, listening to music, and traveling. 
-                    Fun fact: I once spent 3 hours debugging only to realize I forgot to save the file. 😅
-                </p>
-               <div class="flex flex-row items-center gap-4 mt-8">
-<button href="https://drive.google.com/drive/folders/1lI8KVnN6aZ6uaj7JpwG91GhEB3we0iIX?usp=drive_link" type="submit" class="uk-btn text-lg bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 rounded-lg transition-colors animate__animated animate__fadeInLeft">Resume</button><button href="https://www.linkedin.com/in/chilavert-n-dah-ab5779272/" type="submit" class="uk-btn text-lg bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 rounded-lg transition-colors animate__animated animate__fadeInUp">LinkedIn</button><button href="https://www.youtube.com/channel/UC6dVeSK8zBQGaaRE7DXA2ow" type="submit" class="uk-btn text-lg bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 rounded-lg transition-colors animate__animated animate__fadeInRight">YouTube</button>               </div>
+           <div class="uk-section ">
+             <div class="uk-container mt-5 uk-container-xlarge">
+               <div class="uk-flex uk-flex-column uk-flex-middle uk-flex-center py-32 " id="skills">
+                 <h2 class="uk-h2 text-4xl font-semibold mb-12 animate__animated animate__fadeIn">Things I Can Do Without Googling... Mostly</h2>
+                 <div class="flex flex-wrap justify-center gap-4">
+<img src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/python/python.png" class="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"><img src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/django/django.png" class="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"><img src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/cpp/cpp.png" class="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"><img src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/html/html.png" class="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"><img src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/css/css.png" class="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"><img src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/bootstrap/bootstrap.png" class="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"><img src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/javascript/javascript.png" class="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"><img src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/firebase/firebase.png" class="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"><img src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/dart/dart.png" class="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"><img src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/flutter/flutter.png" class="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"><img src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/latex/latex.png" class="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"><img src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/git/git.png" class="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"><img src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/tensorflow/tensorflow.png" class="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"><img src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/visual-studio-code/visual-studio-code.png" class="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn">                 </div>
+               </div>
              </div>
            </div>
-         </div>
-         <div class="uk-section ">
-           <div class="uk-container mt-5 uk-container-xl">
-             <div class="flex flex-col items-center justify-center py-32 " id="skills">
-               <h2 class="uk-h2 text-4xl font-semibold mb-12 animate__animated animate__fadeIn">Things I Can Do Without Googling... Mostly</h2>
-               <div class="flex flex-wrap justify-center gap-4">
-<img src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/python/python.png" class="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"><img src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/django/django.png" class="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"><img src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/cpp/cpp.png" class="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"><img src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/html/html.png" class="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"><img src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/css/css.png" class="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"><img src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/bootstrap/bootstrap.png" class="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"><img src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/javascript/javascript.png" class="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"><img src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/firebase/firebase.png" class="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"><img src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/dart/dart.png" class="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"><img src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/flutter/flutter.png" class="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"><img src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/latex/latex.png" class="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"><img src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/git/git.png" class="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"><img src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/tensorflow/tensorflow.png" class="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"><img src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/visual-studio-code/visual-studio-code.png" class="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn">               </div>
+           <div class="uk-section ">
+             <div class="uk-container mt-5 uk-container-xlarge">
+               <div class="uk-flex uk-flex-column uk-flex-middle uk-flex-center py-32" id="github">
+                 <h2 class="uk-h2 text-4xl font-semibold mb-12 animate__animated animate__fadeIn text-slate-100">GitHub Stats (Proof I Actually Code)</h2>
+                 <div class="github-triangle-layout flex flex-col gap-12 h-full">
+<img src="https://github-readme-streak-stats.herokuapp.com?user=99ch&amp;theme=github-dark-blue&amp;hide_border=True&amp;background=0f172a" class="w-full mb-8 rounded-lg animate__animated animate__fadeInDown">                   <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch h-full">
+<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=99ch&amp;layout=compact&amp;theme=github_dark&amp;hide_border=True&amp;langs_count=10&amp;bg_color=0f172a&amp;height=300" class=" rounded-lg animate__animated animate__fadeInRight">                     <div class="h-full">
+<img src="https://github-readme-stats.vercel.app/api?username=99ch&amp;show_icons=true&amp;theme=github_dark&amp;hide_border=True&amp;bg_color=0f172a&amp;height=300" class="w-full h-full rounded-lg animate__animated animate__fadeInRight object-contain">                     </div>
+                   </div>
+                 </div>
+               </div>
              </div>
            </div>
-         </div>
-         <div class="uk-section ">
-           <div class="uk-container mt-5 uk-container-xl">
-             <div class="flex flex-col items-center justify-center py-32" id="github">
-               <h2 class="uk-h2 text-4xl font-semibold mb-12 animate__animated animate__fadeIn">GitHub Stats (Proof I Actually Code)</h2>
-               <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-<img src="https://github-readme-streak-stats.herokuapp.com?user=99ch&amp;theme=github-dark-blue" class="w-full mb-8 rounded-lg animate__animated animate__fadeInLeft"><img src="https://github-readme-stats.vercel.app/api?username=99ch&amp;show_icons=true&amp;theme=github_dark&amp;hide_border=True" class="w-full mb-8 rounded-lg animate__animated animate__fadeInRight"><img src="https://github-readme-stats.vercel.app/api/top-langs/?username=99ch&amp;layout=compact&amp;theme=github_dark&amp;hide_border=True&amp;langs_count=10" class="w-full rounded-lg animate__animated animate__fadeInUp">               </div>
+           <div class="uk-section contact-section">
+             <div class="uk-container mt-5 uk-container-xlarge">
+               <div class="uk-flex uk-flex-column uk-flex-middle uk-flex-center py-32 contact-content" id="contact">
+                 <h2 class="uk-h2 text-4xl font-semibold mb-12 animate__animated animate__fadeIn">Let&#x27;s Connect</h2>
+                 <p class="text-xl text-center mb-8 animate__animated animate__fadeInUp">Feel free to reach out to me via email.</p>
+<a href="mailto:chilavertndah99@gmail.com" class="text-lg bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 rounded-lg transition-colors animate__animated animate__fadeIn">Send Email</a>               </div>
              </div>
            </div>
-         </div>
-         <div class="uk-section ">
-           <div class="uk-container mt-5 uk-container-xl">
-             <div class="flex flex-col items-center justify-center py-32" id="contact">
-               <h2 class="uk-h2 text-4xl font-semibold mb-12 animate__animated animate__fadeIn">Let&#x27;s Connect</h2>
-               <p class="text-xl text-center mb-8 animate__animated animate__fadeInUp">Feel free to reach out to me via email.</p>
-<a href="mailto:chilavertndah99@gmail.com" class="text-lg bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 rounded-lg transition-colors animate__animated animate__fadeIn">Send Email</a>             </div>
-           </div>
-         </div>
-         <div class="uk-section ">
-           <div class="uk-container mt-5 uk-container-xl">
-             <div class="flex flex-col items-center justify-center  text-center">
-<hr class="mb-12">               <div class="flex flex-row items-center gap-4 mb-6">
-<a href="https://www.linkedin.com/in/chilavert-n-dah-ab5779272/"><img src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg" class="h-8 w-8 animate__animated animate__bounce"></a>               </div>
-               <div class="whitespace-nowrap overflow-hidden w-full">
-                 <p class="text-9xl font-bold whitespace-nowrap inline-block animate-marquee">© 2025 Chilavert N&#x27;dah</p>
-                 <p class="text-9xl font-bold whitespace-nowrap inline-block animate-marquee">© 2025 Chilavert N&#x27;dah</p>
+           <div class="uk-section py-0 full-bleed-section">
+             <div class="footer-container w-full">
+               <div class="w-full">
+                 <div class="uk-flex uk-flex-column uk-flex-middle uk-flex-center py-16">
+<hr class="mb-12 border-blue-500/20">                   <div class="uk-flex uk-flex-row uk-flex-middle gap-4 mb-6 justify-center">
+<a href="https://www.linkedin.com/in/chilavert-n-dah-ab5779272/"><img src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg" class="h-8 w-8 animate__animated animate__bounce"></a>                   </div>
+                   <div class="footer-marquee-container w-screen">
+                     <div class="footer-marquee-wrapper">
+                       <p class="footer-marquee-text text-9xl font-bold whitespace-nowrap inline-block animate-marquee">© 2025 Chilavert N&#x27;dah</p>
+                       <p class="footer-marquee-text text-9xl font-bold whitespace-nowrap inline-block animate-marquee">© 2025 Chilavert N&#x27;dah</p>
+                     </div>
+                   </div>
+                 </div>
                </div>
              </div>
            </div>

@@ -242,6 +242,36 @@ def index():
                 font-size: 6rem !important; /* Medium text on tablet */
             }
         }
+
+        /* Project card styles */
+        .project-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .project-card img {
+            transition: transform 0.5s ease;
+        }
+
+        .project-card:hover img {
+            transform: scale(1.03);
+        }
+
+        .project-tech-badge {
+            display: inline-block;
+            background-color: rgba(59, 130, 246, 0.2);
+            color: #93c5fd;
+            border-radius: 9999px;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.75rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
     """
 
     custom_style = Style(custom_css + """
@@ -322,7 +352,7 @@ def index():
 
                 cls="py-4 flex items-center justify-between"
             ),
-            cls="max-w-7xl mx-auto px-4"  # Removed border-b class here
+            cls="max-w-7xl mx-auto px-4"
         ),
 
         # Mobile menu (initially hidden)
@@ -348,7 +378,7 @@ def index():
         DivCentered(
             H1("Hello, I'm Chilavert N'dah",
                cls="text-6xl font-bold mb-6 text-center text-white animate__animated animate__fadeInDown"),
-            P("Software Developer ", cls="text-xl text-blue-100 mb-8 animate__animated animate__fadeInUp"),
+            P("Software Developer", cls="text-xl text-blue-100 mb-8 animate__animated animate__fadeInUp"),
 
             cls="min-h-screen flex items-center justify-center py-20 hero-content"
         ),
@@ -356,6 +386,72 @@ def index():
         container=False
     )
 
+    # Projects Section (With Real Projects)
+    projects = Section(
+        Container(
+            DivCentered(
+                H2("Projects", cls="text-4xl font-semibold mb-12 animate__animated animate__fadeIn text-slate-100"),
+                Grid(
+                    # MC Agence Webflow Project
+                    Card(
+                        Div(
+                            Img(src="./image/mc-agence.png",
+                                cls="w-full h-auto transition-transform"),
+                            cls="overflow-hidden"
+                        ),
+                        CardBody(
+                            H3("MC Agence Website", cls="text-2xl font-medium mb-2 text-slate-100"),
+                            P("A responsive website design for a marketing agency built with Webflow. Features modern UI/UX design principles, smooth animations, and a client-focused approach.",
+                              cls="text-slate-400 text-sm mb-4"),
+                            Div(
+                                Span("Webflow", cls="project-tech-badge"),
+                                Span("Responsive Design", cls="project-tech-badge"),
+                                Span("UI/UX", cls="project-tech-badge"),
+                                cls="flex flex-wrap mt-2"
+                            ),
+                            A("Visit Website",
+                              href="https://mc-agence.webflow.io",
+                              cls="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg mt-4 transition-colors",
+                              target="_blank"),
+                            cls="flex flex-col"
+                        ),
+                        cls="project-card hover:shadow-2xl animate__animated animate__fadeInLeft bg-slate-800/50 backdrop-blur-sm border-0"
+                    ),
+
+                    # MonsterUI Library Contribution
+                    Card(
+                        Div(
+                            Img(src="./image/monsterui.png",
+                                cls="w-full h-auto transition-transform"),
+                            cls="overflow-hidden"
+                        ),
+                        CardBody(
+                            H3("MonsterUI Library Contribution", cls="text-2xl font-medium mb-2 text-slate-100"),
+                            P("Contributed to the open-source MonsterUI library, which provides UI components for Python web applications. My pull request #30 added new features and improvements to the library.",
+                              cls="text-slate-400 text-sm mb-4"),
+                            Div(
+                                Span("Python", cls="project-tech-badge"),
+                                Span("Open Source", cls="project-tech-badge"),
+                                Span("UI Components", cls="project-tech-badge"),
+                                cls="flex flex-wrap mt-2"
+                            ),
+                            A("View PR on GitHub",
+                              href="https://github.com/AnswerDotAI/MonsterUI/pull/30",
+                              cls="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg mt-4 transition-colors",
+                              target="_blank"),
+                            cls="flex flex-col"
+                        ),
+                        cls="project-card hover:shadow-2xl animate__animated animate__fadeInRight bg-slate-800/50 backdrop-blur-sm border-0"
+                    ),
+                    cls="grid grid-cols-1 md:grid-cols-2 gap-8"
+                ),
+                cls="py-32",
+                id="work"  # Added id for navigation
+            )
+        )
+    )
+
+    # About Section
     about = Section(
         Container(
             DivCentered(
@@ -363,7 +459,7 @@ def index():
                 Grid(
                     # Colonne photo
                     Div(
-                        Img(src="image/full_profil.png",  # ← Votre photo
+                        Img(src="image/full_profil.png",
                             cls="w-full h-auto rounded-2xl shadow-2xl border-4 border-slate-700/20 animate__animated animate__fadeInLeft",
                             style="max-width: 500px;"),
                         cls="flex items-center justify-center"
@@ -378,7 +474,6 @@ def index():
                             Fun fact: I once spent 3 hours debugging only to realize I forgot to save the file. 😅
                         """,
                           cls="text-xl max-w-2xl leading-relaxed text-slate-300 animate__animated animate__fadeInRight mb-12"),
-                        # ← Ajout de mb-12 pour la marge
 
                         DivHStacked(
                             Button("Resume", href="...",
@@ -387,7 +482,7 @@ def index():
                         cls="flex flex-col items-start"
                     ),
 
-                    cls="grid grid-cols-1 md:grid-cols-2 gap-12 items-center"  # Disposition responsive
+                    cls="grid grid-cols-1 md:grid-cols-2 gap-12 items-center"
                 ),
                 cls="py-32",
                 id="about"
@@ -432,7 +527,7 @@ def index():
                         cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
                     cls="flex flex-wrap justify-center gap-4"
                 ),
-                cls="py-32 ",
+                cls="py-32",
                 id="skills"
             )
         )
@@ -452,7 +547,7 @@ def index():
                     # Bottom stats (disposition triangulaire)
                     Grid(
                         Img(src="https://github-readme-stats.vercel.app/api/top-langs/?username=99ch&layout=compact&theme=github_dark&hide_border=True&langs_count=10&bg_color=0f172a&height=300",
-                            cls=" rounded-lg animate__animated animate__fadeInRight"),
+                            cls="rounded-lg animate__animated animate__fadeInRight"),
 
                         Div(
                             Img(src="https://github-readme-stats.vercel.app/api?username=99ch&show_icons=true&theme=github_dark&hide_border=True&bg_color=0f172a&height=300",
@@ -527,6 +622,7 @@ def index():
         nav,
         Div(
             hero,
+            projects,  # Added the projects section
             about,
             skills,
             github_stats,
