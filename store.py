@@ -1,61 +1,121 @@
 from fasthtml.common import *
 from monsterui.all import *
 
-# Use blue theme for a professional look
+# Headers avec le thème bleu et la police Montserrat
 hdrs = (
-    Theme.blue.headers()
+    Theme.blue.headers(),
+    Link(href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap", rel="stylesheet")
 )
 
 app, rt = fast_app(hdrs=hdrs)
 
-
 @rt
 def index():
-    # CSS animations
+    # CSS pour les animations (nécessaire pour le Splash Screen et le footer)
     animate_css = Link(rel="stylesheet",
                        href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css")
 
-    # Custom CSS
+    # Custom CSS avec Splash Screen, footer, et background Hero ajusté
     custom_css = """
         @keyframes marquee {
             0% { transform: translateX(0%); }
             100% { transform: translateX(-50%); }
         }
 
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
         html {
             overflow-x: hidden;
+            margin: 0;
+            padding: 0;
         }
 
-        .animate-marquee {
-            display: inline-block;
-            animation: marquee 10s linear infinite;
-            white-space: nowrap;
-            width: max-content;
-        }
-
-        /* Effet de papier ligné */
         body {
-            overflow-x: hidden; /* Added to prevent horizontal scroll */
+            overflow-x: hidden;
             background-color: #0f172a !important;
             color: #f8fafc !important;
+            font-family: 'Montserrat', sans-serif;
             background-image: 
                 linear-gradient(rgba(148, 163, 184, 0.1) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(148, 163, 184, 0.1) 1px, transparent 1px) !important;
             background-size: 100% 24px, 24px 100% !important;
             background-position: 0 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
         }
 
-        /* Hero Section */
+        /* Splash screen styles */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #0f172a;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .splash-logo {
+            width: 180px;
+            height: auto;
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite;
+        }
+
+        .splash-greeting {
+            font-size: 2rem;
+            color: white;
+            font-weight: bold;
+            height: 3rem;
+            text-align: center;
+        }
+
+        .splash-loading {
+            margin-top: 2rem;
+            width: 100px;
+            height: 3px;
+            background-color: rgba(59, 130, 246, 0.2);
+            border-radius: 3px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .loading-progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0;
+            background-color: #3b82f6;
+            transition: width 2s ease-in-out;
+        }
+
+        /* Hero Section avec background ajusté */
         .hero-bg {
             position: relative;
             min-height: 100vh;
-            margin-top: -64px;
-            padding-top: 64px;
             width: 100vw;
             left: 50%;
             right: 50%;
             margin-left: -50vw;
             margin-right: -50vw;
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+            overflow: hidden;
         }
 
         .hero-bg::before {
@@ -65,136 +125,115 @@ def index():
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: 
-                url('image/background.png');
+            background-image: url('image/background.png');
             background-size: cover;
-            background-position: center top;
+            background-position: top center; /* Changé de 'center top' à 'top center' */
             background-repeat: no-repeat;
             z-index: 0;
             filter: saturate(0.8) brightness(0.9);
-            /* Add a dark blue overlay */
             background-color: rgba(15, 23, 42, 0.7);
             background-blend-mode: overlay;
         }
 
         @media (max-width: 768px) {
             .hero-bg::before {
-                background-position: center top 20%; /* Ajustement mobile */
+                background-position: top center; /* Conservé à 'top center' pour mobile */
             }
         }
-
 
         .hero-content {
             position: relative;
             z-index: 1;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
             max-width: 1200px;
             margin: 0 auto;
-        }
-
-        /* Transparence pour voir les rayures */
-        .dark.bg-slate-900 {
-            background-color: transparent !important;
-        }
-
-        /* Navbar */
-        .fixed-navbar {
-            position: fixed !important;
-            top: 0;
-            left: 0;
-            right: 0;
-            width: 100%;
-            z-index: 1000;
-            transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
-            padding: 0 1.5rem; /* Ajout de marge sur les bords */
-        }
-
-        .nav-scrolled {
-            background-color: rgba(15, 23, 42, 0.95) !important;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
-
-        /* Logo navbar */
-        .nav-logo {
-            height: 40px;
-            width: auto;
-        }
-
-        /* Style du bouton hamburger */
-        .hamburger-button {
-            display: none; /* Caché par défaut */
+            padding: 0 1rem;
+            height: 100vh;
+            display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
-            width: 40px;
-            height: 40px;
-            padding: 5px;
-            border-radius: 5px;
-            border: none;
-            background-color: transparent;
-            cursor: pointer;
-            transition: background-color 0.3s;
+            align-items: flex-end;
+            width: 100%;
+            box-sizing: border-box;
         }
 
-        /* Afficher uniquement sur mobile */
-        @media (max-width: 767px) {
-            .hamburger-button {
-                display: flex;
-            }
-        }
-
-        .hamburger-button:hover {
-            background-color: rgba(59, 130, 246, 0.2);
-        }
-
-        .hamburger-line {
-            width: 24px;
-            height: 2px;
-            background-color: white;
-            margin: 3px 0;
-            transition: all 0.3s ease;
-        }
-
-        body {
-            padding-top: 64px;
-        }
-
-        /* Contact section with logo background */
-        .contact-section {
-            position: relative;
-        }
-
-        .contact-section::before {
-            content: '';
+        /* Vertically positioned logo */
+        .vertical-logo {
             position: absolute;
             top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 300px;
-            height: 300px;
-            background-image: url('./image/logo.png');
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
-            opacity: 0.5;
-            z-index: 0;
+            left: 0.5rem;
+            transform: translateY(-50%) rotate(-90deg);
+            transform-origin: left center;
+            white-space: nowrap;
+            z-index: 10;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1;
         }
 
-        .contact-content {
+        /* Navigation menu */
+        .nav-menu {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            z-index: 10;
+            display: flex;
+            gap: 1rem;
+        }
+
+        /* Title */
+        .hero-title {
             position: relative;
-            z-index: 1;
+            text-align: right;
+            z-index: 10;
+            margin-right: 2rem;
         }
 
-        @media (max-width: 768px) {
-            .hero-bg::before {
-                background-position: 60% center;
-            }
+        /* Contact button avec clignotement */
+        .contact-button {
+            position: absolute;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 10;
+            animation: blink 1s infinite;
+        }
 
-            .hero-content h1 {
-                font-size: 2.5rem !important;
+        /* Services section */
+        .services-section {
+            position: absolute;
+            bottom: 2rem;
+            left: 2rem;
+            z-index: 10;
+            background-color: rgba(30, 41, 59, 1);
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
+
+        @media (max-width: 767px) {
+            .nav-menu {
+                top: 0.5rem;
+                right: 0.5rem;
+            }
+            .hero-title {
+                margin-right: 1rem;
+                font-size: 2rem;
+            }
+            .contact-button {
+                bottom: 1rem;
+                right: 1rem;
+            }
+            .services-section {
+                bottom: 1rem;
+                left: 1rem;
+                padding: 0.5rem;
+            }
+            .vertical-logo {
+                font-size: 1.5rem;
+                left: 0.6rem;
             }
         }
 
+        /* Styles repris de l'ancienne version pour Projects à Footer */
         .full-bleed-section {
             width: 100vw;
             position: relative;
@@ -228,6 +267,14 @@ def index():
             position: relative;
             white-space: nowrap;
             width: auto;
+        }
+
+        /* Animation marquee pour le footer */
+        .animate-marquee {
+            display: inline-block;
+            animation: marquee 10s linear infinite;
+            white-space: nowrap;
+            width: max-content;
         }
 
         /* Responsive text sizes for footer */
@@ -272,121 +319,147 @@ def index():
             margin-right: 0.5rem;
             margin-bottom: 0.5rem;
         }
+
+        /* Contact section with logo background */
+        .contact-section {
+            position: relative;
+        }
+
+        .contact-section::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            background-image: url('./image/logo.png');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.5;
+            z-index: 0;
+        }
+
+        .contact-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Transparent background for main content */
+        .dark.bg-slate-900 {
+            background-color: transparent !important;
+        }
     """
 
     custom_style = Style(custom_css + """
         </style>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                const navbar = document.querySelector('.fixed-navbar');
-                let lastScrollY = window.scrollY;
+                // Splash screen functionality
+                const splashScreen = document.getElementById('splash-screen');
+                const loadingBar = document.getElementById('loading-progress');
+                const splashGreeting = document.getElementById('splash-greeting');
+                const mainContent = document.getElementById('main-content');
 
-                navbar && window.addEventListener('scroll', function() {
-                    const currentScrollY = window.scrollY;
+                if (!splashScreen || !loadingBar || !splashGreeting || !mainContent) {
+                    console.error('Splash screen elements missing');
+                    return;
+                }
 
-                    if (currentScrollY > lastScrollY && currentScrollY > 100) {
-                        navbar.style.transform = 'translateY(-100%)';
-                    } else {
-                        navbar.style.transform = 'translateY(0)';
-                        navbar.classList.toggle('nav-scrolled', currentScrollY > 50);
-                    }
-                    lastScrollY = currentScrollY;
-                });
+                // Initialisation explicite
+                splashScreen.style.opacity = '1';
+                mainContent.style.opacity = '0';
 
-                // Mobile menu toggle
-                const mobileMenuButton = document.getElementById('mobile-menu-button');
-                const mobileMenu = document.getElementById('mobile-menu');
+                const greetings = [
+                    "Hello", "Bonjour", "Hola", "Ciao", "Olá", 
+                    "Привет", "こんにちは", "你好", "안녕하세요", 
+                    "مرحبا", "नमस्ते", "Hallo", "Γειά σου", "Salve"
+                ];
 
-                mobileMenuButton && mobileMenuButton.addEventListener('click', function() {
-                    mobileMenu.classList.toggle('hidden');
-                });
+                let currentGreetingIndex = 0;
 
-                // Close mobile menu when clicking on a link
-                const mobileMenuLinks = mobileMenu.querySelectorAll('a');
-                mobileMenuLinks.forEach(link => {
-                    link.addEventListener('click', function() {
-                        mobileMenu.classList.add('hidden');
-                    });
-                });
+                function cycleGreetings() {
+                    splashGreeting.textContent = greetings[currentGreetingIndex];
+                    currentGreetingIndex = (currentGreetingIndex + 1) % greetings.length;
+                }
+
+                let greetingInterval = setInterval(cycleGreetings, 600);
+                cycleGreetings();
+
+                // Démarrer la barre de progression
+                setTimeout(() => {
+                    loadingBar.style.width = '100%';
+                }, 100);
+
+                // Cacher le splash screen après 3 secondes
+                setTimeout(() => {
+                    splashScreen.style.opacity = '0';
+                    mainContent.style.opacity = '1';
+                    clearInterval(greetingInterval);
+                    setTimeout(() => {
+                        splashScreen.style.display = 'none';
+                    }, 500); // Attendre la fin de la transition
+                }, 3000);
             });
         </script>
         <style>
-        """)
+    """)
+
+    # Splash Screen
+    splash_screen = Div(
+        Img(src="./image/logo.png", cls="splash-logo", alt="Logo"),
+        Div(id="splash-greeting", cls="splash-greeting"),
+        Div(Div(id="loading-progress", cls="loading-progress"), cls="splash-loading"),
+        id="splash-screen",
+        cls="splash-screen"
+    )
 
     # Navigation
     nav = Div(
-        Container(
-            DivFullySpaced(
-                # Logo/Brand on the left - remplacé par l'image
-                A(
-                    Img(src="./image/logo.png", cls="nav-logo", alt="Logo"),
-                    href="#",
-                    cls="flex items-center"
-                ),
-
-                # Desktop menu (hidden on mobile)
-                Div(
-                    DivHStacked(
-                        A("Work", href="#work",
-                          cls="text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-blue-500/20"),
-                        A("About", href="#about",
-                          cls="text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-blue-500/20"),
-                        A("Contact", href="#contact",
-                          cls="text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-blue-500/20"),
-                        cls="gap-2"
-                    ),
-                    cls="hidden md:flex"  # Hide on mobile, show on medium screens and up
-                ),
-
-                # Bouton hamburger - maintenant correctement caché sur desktop
-                Button(
-                    Div(
-                        Span(cls="hamburger-line"),
-                        Span(cls="hamburger-line"),
-                        Span(cls="hamburger-line"),
-                        cls="flex flex-col justify-center items-center"
-                    ),
-                    cls="hamburger-button focus:outline-none",
-                    id="mobile-menu-button"
-                ),
-
-                cls="py-4 flex items-center justify-between"
-            ),
-            cls="max-w-7xl mx-auto px-4"
-        ),
-
-        # Mobile menu (initially hidden)
         Div(
-            Div(
-                A("Work", href="#work",
-                  cls="block text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-3 border-b border-blue-500/20"),
-                A("About", href="#about",
-                  cls="block text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-3 border-b border-blue-500/20"),
-                A("Contact", href="#contact",
-                  cls="block text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-3"),
-                cls="py-2"
+            DivHStacked(
+                A("Work", href="#work", cls="text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-blue-500/20"),
+                A("About", href="#about", cls="text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-blue-500/20"),
+                A("Contact", href="#contact", cls="text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-blue-500/20"),
+                cls="gap-2"
             ),
-            cls="hidden bg-slate-900 md:hidden",
-            id="mobile-menu"
-        ),
-
-        cls="fixed-navbar"
+            cls="nav-menu"
+        )
     )
 
     # Hero Section
     hero = Section(
-        DivCentered(
-            H1("Hello, I'm Chilavert N'dah",
-               cls="text-6xl font-bold mb-6 text-center text-white animate__animated animate__fadeInDown"),
-            P("Software Developer", cls="text-xl text-blue-100 mb-8 animate__animated animate__fadeInUp"),
-
-            cls="min-h-screen flex items-center justify-center py-20 hero-content"
+        Div(
+            Span("Think different", cls="vertical-logo"),
+            nav,
+            Div(
+                H1("Chilavert N'dah", cls="text-5xl font-bold text-white"),
+                P("Software Developer", cls="text-xl text-blue-100"),
+                cls="hero-title"
+            ),
+            Button(
+                "Contact",
+                cls="contact-button bg-yellow-400 text-black px-6 py-3 rounded-lg hover:bg-yellow-500 transition-colors",
+                onclick="location.href='#contact'"
+            ),
+            Div(
+                H3("Services", cls="text-white text-lg mb-2"),
+                Ul(
+                    Li("Full-Stack Development", cls="text-white hover:text-blue-300 transition-colors"),
+                    Li("Open Source Contributions", cls="text-white hover:text-blue-300 transition-colors"),
+                    Li("UI/UX Design", cls="text-white hover:text-blue-300 transition-colors"),
+                    cls="list-none"
+                ),
+                cls="services-section"
+            ),
+            cls="hero-content"
         ),
         cls="hero-bg",
         container=False
     )
 
-    # Projects Section (With Real Projects)
+    # Projects Section (copiée de l'ancienne version)
     projects = Section(
         Container(
             DivCentered(
@@ -446,12 +519,12 @@ def index():
                     cls="grid grid-cols-1 md:grid-cols-2 gap-8"
                 ),
                 cls="py-32",
-                id="work"  # Added id for navigation
+                id="work"
             )
         )
     )
 
-    # About Section
+    # About Section (copiée de l'ancienne version)
     about = Section(
         Container(
             DivCentered(
@@ -490,7 +563,7 @@ def index():
         )
     )
 
-    # Skills Section (With Animated Icons)
+    # Skills Section (copiée de l'ancienne version)
     skills = Section(
         Container(
             DivCentered(
@@ -533,7 +606,7 @@ def index():
         )
     )
 
-    # GitHub Stats Section (With Animated Stats)
+    # GitHub Stats Section (copiée de l'ancienne version)
     github_stats = Section(
         Container(
             DivCentered(
@@ -565,7 +638,7 @@ def index():
         )
     )
 
-    # Contact Section with logo in background
+    # Contact Section (copiée de l'ancienne version)
     contact = Section(
         Container(
             DivCentered(
@@ -581,7 +654,7 @@ def index():
         cls="contact-section"
     )
 
-    # FIXED Footer with marquee animation (preserving all original elements)
+    # Footer (copié de l'ancienne version)
     footer = Section(
         Div(
             Div(
@@ -616,21 +689,27 @@ def index():
         container=False
     )
 
-    return Titled(
-        animate_css,
-        custom_style,
-        nav,
+    # Main content avec Splash Screen
+    main_content = Div(
+        splash_screen,
         Div(
             hero,
-            projects,  # Added the projects section
+            projects,
             about,
             skills,
             github_stats,
             contact,
             footer,
-            cls="dark bg-slate-900 text-slate-100"
+            cls="dark bg-slate-900 text-slate-100",
+            id="main-content",
+            style="opacity: 0; transition: opacity 1s ease-in-out;"
         )
     )
 
+    return Titled(
+        animate_css,
+        custom_style,
+        main_content
+    )
 
 serve()
