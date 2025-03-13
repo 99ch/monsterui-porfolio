@@ -11,11 +11,9 @@ app, rt = fast_app(hdrs=hdrs)
 
 @rt
 def index():
-    # CSS pour les animations (nécessaire pour le Splash Screen et le footer)
     animate_css = Link(rel="stylesheet",
                        href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css")
 
-    # Custom CSS avec Splash Screen, footer, et background Hero ajusté
     custom_css = """
         @keyframes marquee {
             0% { transform: translateX(0%); }
@@ -31,6 +29,16 @@ def index():
         @keyframes blink {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.5; }
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .animate__animated {
+            opacity: 1;
+            visibility: visible;
         }
 
         html {
@@ -51,9 +59,9 @@ def index():
             background-position: 0 0 !important;
             margin: 0 !important;
             padding: 0 !important;
+            padding-top: 64px;
         }
 
-        /* Splash screen styles */
         .splash-screen {
             position: fixed;
             top: 0;
@@ -104,7 +112,60 @@ def index():
             transition: width 2s ease-in-out;
         }
 
-        /* Hero Section avec background ajusté */
+        .fixed-navbar {
+            position: fixed !important;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+            padding: 0 1.5rem;
+        }
+
+        .nav-scrolled {
+            background-color: rgba(15, 23, 42, 0.95) !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .nav-logo {
+            height: 40px;
+            width: auto;
+        }
+
+        .hamburger-button {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            padding: 5px;
+            border-radius: 5px;
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        @media (max-width: 767px) {
+            .hamburger-button {
+                display: flex;
+            }
+        }
+
+        .hamburger-button:hover {
+            background-color: rgba(59, 130, 246, 0.2);
+        }
+
+        .hamburger-line {
+            width: 24px;
+            height: 2px;
+            background-color: white;
+            margin: 3px 0;
+            transition: all 0.3s ease;
+        }
+
         .hero-bg {
             position: relative;
             min-height: 100vh;
@@ -127,7 +188,7 @@ def index():
             height: 100%;
             background-image: url('image/background.png');
             background-size: cover;
-            background-position: top center; /* Changé de 'center top' à 'top center' */
+            background-position: top center;
             background-repeat: no-repeat;
             z-index: 0;
             filter: saturate(0.8) brightness(0.9);
@@ -137,7 +198,7 @@ def index():
 
         @media (max-width: 768px) {
             .hero-bg::before {
-                background-position: top center; /* Conservé à 'top center' pour mobile */
+                background-position: top center;
             }
         }
 
@@ -156,12 +217,12 @@ def index():
             box-sizing: border-box;
         }
 
-        /* Vertically positioned logo */
-        .vertical-logo {
+        /* Style renforcé pour .vertical-logo */
+        .hero-content .vertical-logo {
             position: absolute;
             top: 50%;
             left: 0.5rem;
-            transform: translateY(-50%) rotate(-90deg);
+            transform: translateY(-50%) rotate(-90deg) !important; /* !important pour tester les surcharges */
             transform-origin: left center;
             white-space: nowrap;
             z-index: 10;
@@ -169,19 +230,16 @@ def index():
             font-weight: 700;
             color: #ffffff;
             line-height: 1;
+            display: block;
         }
 
-        /* Navigation menu */
-        .nav-menu {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            z-index: 10;
-            display: flex;
-            gap: 1rem;
+        @media (max-width: 767px) {
+            .hero-content .vertical-logo {
+                font-size: 1.5rem;
+                left: 0.6rem;
+            }
         }
 
-        /* Title */
         .hero-title {
             position: relative;
             text-align: right;
@@ -189,7 +247,6 @@ def index():
             margin-right: 2rem;
         }
 
-        /* Contact button avec clignotement */
         .contact-button {
             position: absolute;
             bottom: 2rem;
@@ -198,7 +255,6 @@ def index():
             animation: blink 1s infinite;
         }
 
-        /* Services section */
         .services-section {
             position: absolute;
             bottom: 2rem;
@@ -210,10 +266,6 @@ def index():
         }
 
         @media (max-width: 767px) {
-            .nav-menu {
-                top: 0.5rem;
-                right: 0.5rem;
-            }
             .hero-title {
                 margin-right: 1rem;
                 font-size: 2rem;
@@ -227,13 +279,8 @@ def index():
                 left: 1rem;
                 padding: 0.5rem;
             }
-            .vertical-logo {
-                font-size: 1.5rem;
-                left: 0.6rem;
-            }
         }
 
-        /* Styles repris de l'ancienne version pour Projects à Footer */
         .full-bleed-section {
             width: 100vw;
             position: relative;
@@ -244,14 +291,12 @@ def index():
             overflow: hidden;
         }
 
-        /* Fix footer overflow */
         .footer-container {
             width: 100%;
             overflow: hidden;
             position: relative;
         }
 
-        /* Fix marquee container */
         .footer-marquee-container {
             width: 100%;
             overflow: hidden;
@@ -261,7 +306,6 @@ def index():
             justify-content: center;
         }
 
-        /* Fixed marquee wrapper */
         .footer-marquee-wrapper {
             display: inline-flex;
             position: relative;
@@ -269,7 +313,6 @@ def index():
             width: auto;
         }
 
-        /* Animation marquee pour le footer */
         .animate-marquee {
             display: inline-block;
             animation: marquee 10s linear infinite;
@@ -277,20 +320,18 @@ def index():
             width: max-content;
         }
 
-        /* Responsive text sizes for footer */
         @media (max-width: 768px) {
             .footer-marquee-text {
-                font-size: 4rem !important; /* Smaller text on mobile */
+                font-size: 4rem !important;
             }
         }
 
         @media (min-width: 769px) and (max-width: 1024px) {
             .footer-marquee-text {
-                font-size: 6rem !important; /* Medium text on tablet */
+                font-size: 6rem !important;
             }
         }
 
-        /* Project card styles */
         .project-card {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
@@ -320,7 +361,6 @@ def index():
             margin-bottom: 0.5rem;
         }
 
-        /* Contact section with logo background */
         .contact-section {
             position: relative;
         }
@@ -346,7 +386,6 @@ def index():
             z-index: 1;
         }
 
-        /* Transparent background for main content */
         .dark.bg-slate-900 {
             background-color: transparent !important;
         }
@@ -356,7 +395,6 @@ def index():
         </style>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                // Splash screen functionality
                 const splashScreen = document.getElementById('splash-screen');
                 const loadingBar = document.getElementById('loading-progress');
                 const splashGreeting = document.getElementById('splash-greeting');
@@ -367,7 +405,6 @@ def index():
                     return;
                 }
 
-                // Initialisation explicite
                 splashScreen.style.opacity = '1';
                 mainContent.style.opacity = '0';
 
@@ -387,26 +424,74 @@ def index():
                 let greetingInterval = setInterval(cycleGreetings, 600);
                 cycleGreetings();
 
-                // Démarrer la barre de progression
                 setTimeout(() => {
                     loadingBar.style.width = '100%';
                 }, 100);
 
-                // Cacher le splash screen après 3 secondes
                 setTimeout(() => {
                     splashScreen.style.opacity = '0';
                     mainContent.style.opacity = '1';
                     clearInterval(greetingInterval);
                     setTimeout(() => {
                         splashScreen.style.display = 'none';
-                    }, 500); // Attendre la fin de la transition
+                    }, 500);
                 }, 3000);
+
+                const navbar = document.querySelector('.fixed-navbar');
+                let lastScrollY = window.scrollY;
+
+                navbar && window.addEventListener('scroll', function() {
+                    const currentScrollY = window.scrollY;
+
+                    if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                        navbar.style.transform = 'translateY(-100%)';
+                    } else {
+                        navbar.style.transform = 'translateY(0)';
+                        navbar.classList.toggle('nav-scrolled', currentScrollY > 50);
+                    }
+                    lastScrollY = currentScrollY;
+                });
+
+                const mobileMenuButton = document.getElementById('mobile-menu-button');
+                const mobileMenu = document.getElementById('mobile-menu');
+
+                mobileMenuButton && mobileMenuButton.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                });
+
+                const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+                mobileMenuLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        mobileMenu.classList.add('hidden');
+                    });
+                });
+
+                function createScrollAnimations() {
+                    const animatedElements = document.querySelectorAll('.animate-on-scroll');
+
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                const animation = entry.target.getAttribute('data-animation');
+                                entry.target.classList.add('animate__animated', `animate__${animation}`);
+                                observer.unobserve(entry.target);
+                            }
+                        });
+                    }, {
+                        threshold: 0.1
+                    });
+
+                    animatedElements.forEach(element => {
+                        observer.observe(element);
+                    });
+                }
+
+                createScrollAnimations();
             });
         </script>
         <style>
     """)
 
-    # Splash Screen
     splash_screen = Div(
         Img(src="./image/logo.png", cls="splash-logo", alt="Logo"),
         Div(id="splash-greeting", cls="splash-greeting"),
@@ -415,40 +500,70 @@ def index():
         cls="splash-screen"
     )
 
-    # Navigation
     nav = Div(
-        Div(
-            DivHStacked(
-                A("Work", href="#work", cls="text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-blue-500/20"),
-                A("About", href="#about", cls="text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-blue-500/20"),
-                A("Contact", href="#contact", cls="text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-blue-500/20"),
-                cls="gap-2"
+        Container(
+            DivFullySpaced(
+                A(
+                    Img(src="./image/logo.png", cls="nav-logo", alt="Logo"),
+                    href="#",
+                    cls="flex items-center"
+                ),
+                Div(
+                    DivHStacked(
+                        A("Work", href="#work", cls="text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-blue-500/20"),
+                        A("About", href="#about", cls="text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-blue-500/20"),
+                        A("Contact", href="#contact", cls="text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-blue-500/20"),
+                        cls="gap-2"
+                    ),
+                    cls="hidden md:flex"
+                ),
+                Button(
+                    Div(
+                        Span(cls="hamburger-line"),
+                        Span(cls="hamburger-line"),
+                        Span(cls="hamburger-line"),
+                        cls="flex flex-col justify-center items-center"
+                    ),
+                    cls="hamburger-button focus:outline-none",
+                    id="mobile-menu-button"
+                ),
+                cls="py-4 flex items-center justify-between"
             ),
-            cls="nav-menu"
-        )
+            cls="max-w-7xl mx-auto px-4"
+        ),
+        Div(
+            Div(
+                A("Work", href="#work", cls="block text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-3 border-b border-blue-500/20"),
+                A("About", href="#about", cls="block text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-3 border-b border-blue-500/20"),
+                A("Contact", href="#contact", cls="block text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-3"),
+                cls="py-2"
+            ),
+            cls="hidden bg-slate-900 md:hidden",
+            id="mobile-menu"
+        ),
+        cls="fixed-navbar"
     )
 
-    # Hero Section
     hero = Section(
         Div(
-            Span("Think different", cls="vertical-logo"),
-            nav,
+            Span("Think different", cls="vertical-logo animate-on-scroll", **{"data-animation": "fadeInLeft"}),
             Div(
-                H1("Chilavert N'dah", cls="text-5xl font-bold text-white"),
-                P("Software Developer", cls="text-xl text-blue-100"),
+                H1("Chilavert N'dah", cls="text-5xl font-bold text-white animate-on-scroll", **{"data-animation": "fadeInDown"}),
+                P("Software Developer", cls="text-xl text-blue-100 animate-on-scroll", **{"data-animation": "fadeInUp"}),
                 cls="hero-title"
             ),
             Button(
                 "Contact",
-                cls="contact-button bg-yellow-400 text-black px-6 py-3 rounded-lg hover:bg-yellow-500 transition-colors",
-                onclick="location.href='#contact'"
+                cls="contact-button bg-yellow-400 text-black px-6 py-3 rounded-lg hover:bg-yellow-500 transition-colors animate-on-scroll",
+                onclick="location.href='#contact'",
+                **{"data-animation": "fadeIn"}
             ),
             Div(
-                H3("Services", cls="text-white text-lg mb-2"),
+                H3("Services", cls="text-white text-lg mb-2 animate-on-scroll", **{"data-animation": "fadeInLeft"}),
                 Ul(
-                    Li("Full-Stack Development", cls="text-white hover:text-blue-300 transition-colors"),
-                    Li("Open Source Contributions", cls="text-white hover:text-blue-300 transition-colors"),
-                    Li("UI/UX Design", cls="text-white hover:text-blue-300 transition-colors"),
+                    Li("Full-Stack Development", cls="text-white hover:text-blue-300 transition-colors animate-on-scroll", **{"data-animation": "fadeInLeft"}),
+                    Li("Open Source Contributions", cls="text-white hover:text-blue-300 transition-colors animate-on-scroll", **{"data-animation": "fadeInLeft"}),
+                    Li("UI/UX Design", cls="text-white hover:text-blue-300 transition-colors animate-on-scroll", **{"data-animation": "fadeInLeft"}),
                     cls="list-none"
                 ),
                 cls="services-section"
@@ -459,17 +574,14 @@ def index():
         container=False
     )
 
-    # Projects Section (copiée de l'ancienne version)
     projects = Section(
         Container(
             DivCentered(
-                H2("Projects", cls="text-4xl font-semibold mb-12 animate__animated animate__fadeIn text-slate-100"),
+                H2("Projects", cls="text-4xl font-semibold mb-12 animate-on-scroll text-slate-100", **{"data-animation": "fadeIn"}),
                 Grid(
-                    # MC Agence Webflow Project
                     Card(
                         Div(
-                            Img(src="./image/mc-agence.png",
-                                cls="w-full h-auto transition-transform"),
+                            Img(src="./image/mc-agence.png", cls="w-full h-auto transition-transform"),
                             cls="overflow-hidden"
                         ),
                         CardBody(
@@ -488,14 +600,12 @@ def index():
                               target="_blank"),
                             cls="flex flex-col"
                         ),
-                        cls="project-card hover:shadow-2xl animate__animated animate__fadeInLeft bg-slate-800/50 backdrop-blur-sm border-0"
+                        cls="project-card hover:shadow-2xl animate-on-scroll bg-slate-800/50 backdrop-blur-sm border-0",
+                        **{"data-animation": "fadeInLeft"}
                     ),
-
-                    # MonsterUI Library Contribution
                     Card(
                         Div(
-                            Img(src="./image/monsterui.png",
-                                cls="w-full h-auto transition-transform"),
+                            Img(src="./image/monsterui.png", cls="w-full h-auto transition-transform"),
                             cls="overflow-hidden"
                         ),
                         CardBody(
@@ -514,7 +624,8 @@ def index():
                               target="_blank"),
                             cls="flex flex-col"
                         ),
-                        cls="project-card hover:shadow-2xl animate__animated animate__fadeInRight bg-slate-800/50 backdrop-blur-sm border-0"
+                        cls="project-card hover:shadow-2xl animate-on-scroll bg-slate-800/50 backdrop-blur-sm border-0",
+                        **{"data-animation": "fadeInRight"}
                     ),
                     cls="grid grid-cols-1 md:grid-cols-2 gap-8"
                 ),
@@ -524,21 +635,18 @@ def index():
         )
     )
 
-    # About Section (copiée de l'ancienne version)
     about = Section(
         Container(
             DivCentered(
-                H2("About Me", cls="text-4xl font-semibold mb-12 animate__animated animate__fadeIn text-slate-100"),
+                H2("About Me", cls="text-4xl font-semibold mb-12 animate-on-scroll text-slate-100", **{"data-animation": "fadeIn"}),
                 Grid(
-                    # Colonne photo
                     Div(
                         Img(src="image/full_profil.png",
-                            cls="w-full h-auto rounded-2xl shadow-2xl border-4 border-slate-700/20 animate__animated animate__fadeInLeft",
-                            style="max-width: 500px;"),
+                            cls="w-full h-auto rounded-2xl shadow-2xl border-4 border-slate-700/20 animate-on-scroll",
+                            style="max-width: 500px;",
+                            **{"data-animation": "fadeInLeft"}),
                         cls="flex items-center justify-center"
                     ),
-
-                    # Colonne texte
                     Div(
                         P("""
                             I'm a Computer Science graduate from UCAO in Cotonou. Currently, I work as a freelance Software Developer and 
@@ -546,15 +654,15 @@ def index():
                             Outside of coding, I enjoy playing basketball, listening to music, and traveling. 
                             Fun fact: I once spent 3 hours debugging only to realize I forgot to save the file. 😅
                         """,
-                          cls="text-xl max-w-2xl leading-relaxed text-slate-300 animate__animated animate__fadeInRight mb-12"),
-
+                          cls="text-xl max-w-2xl leading-relaxed text-slate-300 animate-on-scroll mb-12",
+                          **{"data-animation": "fadeInRight"}),
                         DivHStacked(
                             Button("Resume", href="...",
-                                   cls="text-lg bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 rounded-lg transition-colors animate__animated animate__fadeInLeft"),
+                                   cls="text-lg bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 rounded-lg transition-colors animate-on-scroll",
+                                   **{"data-animation": "fadeInLeft"}),
                         ),
                         cls="flex flex-col items-start"
                     ),
-
                     cls="grid grid-cols-1 md:grid-cols-2 gap-12 items-center"
                 ),
                 cls="py-32",
@@ -563,41 +671,55 @@ def index():
         )
     )
 
-    # Skills Section (copiée de l'ancienne version)
     skills = Section(
         Container(
             DivCentered(
                 H2("Things I Can Do Without Googling... Mostly",
-                   cls="text-4xl font-semibold mb-12 animate__animated animate__fadeIn"),
+                   cls="text-4xl font-semibold mb-12 animate-on-scroll",
+                   **{"data-animation": "fadeIn"}),
                 Div(
                     Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/python/python.png",
-                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
+                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll",
+                        **{"data-animation": "fadeIn"}),
                     Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/django/django.png",
-                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
+                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll",
+                        **{"data-animation": "fadeIn"}),
                     Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/cpp/cpp.png",
-                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
+                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll",
+                        **{"data-animation": "fadeIn"}),
                     Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/html/html.png",
-                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
+                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll",
+                        **{"data-animation": "fadeIn"}),
                     Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/css/css.png",
-                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
+                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll",
+                        **{"data-animation": "fadeIn"}),
                     Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/bootstrap/bootstrap.png",
-                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
+                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll",
+                        **{"data-animation": "fadeIn"}),
                     Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/javascript/javascript.png",
-                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
+                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll",
+                        **{"data-animation": "fadeIn"}),
                     Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/firebase/firebase.png",
-                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
+                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll",
+                        **{"data-animation": "fadeIn"}),
                     Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/dart/dart.png",
-                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
+                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll",
+                        **{"data-animation": "fadeIn"}),
                     Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/flutter/flutter.png",
-                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
+                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll",
+                        **{"data-animation": "fadeIn"}),
                     Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/latex/latex.png",
-                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
+                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll",
+                        **{"data-animation": "fadeIn"}),
                     Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/git/git.png",
-                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
+                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll",
+                        **{"data-animation": "fadeIn"}),
                     Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/tensorflow/tensorflow.png",
-                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
+                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll",
+                        **{"data-animation": "fadeIn"}),
                     Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/visual-studio-code/visual-studio-code.png",
-                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate__animated animate__fadeIn"),
+                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll",
+                        **{"data-animation": "fadeIn"}),
                     cls="flex flex-wrap justify-center gap-4"
                 ),
                 cls="py-32",
@@ -606,28 +728,26 @@ def index():
         )
     )
 
-    # GitHub Stats Section (copiée de l'ancienne version)
     github_stats = Section(
         Container(
             DivCentered(
                 H2("GitHub Stats (Proof I Actually Code)",
-                   cls="text-4xl font-semibold mb-12 animate__animated animate__fadeIn text-slate-100"),
+                   cls="text-4xl font-semibold mb-12 animate-on-scroll text-slate-100",
+                   **{"data-animation": "fadeIn"}),
                 Div(
-                    # Top stat (centré)
                     Img(src="https://github-readme-streak-stats.herokuapp.com?user=99ch&theme=github-dark-blue&hide_border=True&background=0f172a",
-                        cls="w-full mb-8 rounded-lg animate__animated animate__fadeInDown"),
-
-                    # Bottom stats (disposition triangulaire)
+                        cls="w-full mb-8 rounded-lg animate-on-scroll",
+                        **{"data-animation": "fadeInDown"}),
                     Grid(
                         Img(src="https://github-readme-stats.vercel.app/api/top-langs/?username=99ch&layout=compact&theme=github_dark&hide_border=True&langs_count=10&bg_color=0f172a&height=300",
-                            cls="rounded-lg animate__animated animate__fadeInRight"),
-
+                            cls="rounded-lg animate-on-scroll",
+                            **{"data-animation": "fadeInRight"}),
                         Div(
                             Img(src="https://github-readme-stats.vercel.app/api?username=99ch&show_icons=true&theme=github_dark&hide_border=True&bg_color=0f172a&height=300",
-                                cls="w-full h-full rounded-lg animate__animated animate__fadeInRight object-contain"),
+                                cls="w-full h-full rounded-lg animate-on-scroll object-contain",
+                                **{"data-animation": "fadeInRight"}),
                             cls="h-full"
                         ),
-
                         cls="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch h-full"
                     ),
                     cls="github-triangle-layout flex flex-col gap-12 h-full"
@@ -638,15 +758,16 @@ def index():
         )
     )
 
-    # Contact Section (copiée de l'ancienne version)
     contact = Section(
         Container(
             DivCentered(
-                H2("Let's Connect", cls="text-4xl font-semibold mb-12 animate__animated animate__fadeIn"),
+                H2("Let's Connect", cls="text-4xl font-semibold mb-12 animate-on-scroll", **{"data-animation": "fadeIn"}),
                 P("Feel free to reach out to me via email.",
-                  cls="text-xl text-center mb-8 animate__animated animate__fadeInUp"),
+                  cls="text-xl text-center mb-8 animate-on-scroll",
+                  **{"data-animation": "fadeInUp"}),
                 A("Send Email", href="mailto:chilavertndah99@gmail.com",
-                  cls="text-lg bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 rounded-lg transition-colors animate__animated animate__fadeIn"),
+                  cls="text-lg bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 rounded-lg transition-colors animate-on-scroll",
+                  **{"data-animation": "fadeIn"}),
                 cls="py-32 contact-content",
                 id="contact"
             )
@@ -654,7 +775,6 @@ def index():
         cls="contact-section"
     )
 
-    # Footer (copié de l'ancienne version)
     footer = Section(
         Div(
             Div(
@@ -667,9 +787,7 @@ def index():
                             href="https://www.linkedin.com/in/chilavert-n-dah-ab5779272/"),
                         cls="gap-4 mb-6 justify-center"
                     ),
-                    # Marquee container
                     Div(
-                        # Marquee wrapper
                         Div(
                             P("© 2025 Chilavert N'dah",
                               cls="footer-marquee-text text-9xl font-bold whitespace-nowrap inline-block animate-marquee"),
@@ -689,10 +807,10 @@ def index():
         container=False
     )
 
-    # Main content avec Splash Screen
     main_content = Div(
         splash_screen,
         Div(
+            nav,
             hero,
             projects,
             about,
