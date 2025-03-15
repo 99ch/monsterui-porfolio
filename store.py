@@ -9,7 +9,6 @@ hdrs = (
 
 app, rt = fast_app(hdrs=hdrs)
 
-
 @rt
 def index():
     animate_css = Link(rel="stylesheet",
@@ -480,18 +479,22 @@ def index():
                 let greetingInterval = setInterval(cycleGreetings, 600);
                 cycleGreetings();
 
+                // Démarrer la progression de la barre immédiatement
                 setTimeout(() => {
                     loadingBar.style.width = '100%';
                 }, 100);
 
-                setTimeout(() => {
-                    splashScreen.style.opacity = '0';
-                    mainContent.style.opacity = '1';
-                    clearInterval(greetingInterval);
+                // Attendre que la page soit complètement chargée
+                window.onload = function() {
                     setTimeout(() => {
-                        splashScreen.style.display = 'none';
-                    }, 500);
-                }, 1500);
+                        splashScreen.style.opacity = '0';
+                        mainContent.style.opacity = '1';
+                        clearInterval(greetingInterval);
+                        setTimeout(() => {
+                            splashScreen.style.display = 'none';
+                        }, 500); // Délai pour la transition d'opacité
+                    }, 500); // Délai minimum après chargement complet
+                };
 
                 const navbar = document.querySelector('.fixed-navbar');
                 let lastScrollY = window.scrollY;
@@ -907,7 +910,6 @@ def index():
         custom_style,
         main_content
     )
-
 
 if __name__ == "__main__":
     from starlette.testclient import TestClient
