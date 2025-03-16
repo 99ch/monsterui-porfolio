@@ -4,17 +4,18 @@ from monsterui.all import *
 # Headers avec le thème bleu et la police Montserrat
 hdrs = (
     Theme.blue.headers(),
-    Link(href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap", rel="stylesheet")
+    Link(href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap", rel="stylesheet"),
+    Link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css")  # FontAwesome pour les icônes
 )
 
 app, rt = fast_app(hdrs=hdrs)
+
 
 @rt
 def index():
     animate_css = Link(rel="stylesheet",
                        href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css")
 
-    # Ajout du favicon
     favicon = Link(rel="icon", href="/favicon.ico", type="image/x-icon")
 
     custom_css = """
@@ -280,6 +281,20 @@ def index():
             background: linear-gradient(135deg, #fde047, #fb923c);
         }
 
+        .whatsapp-button {
+            position: absolute;
+            bottom: 6rem; /* Positionné au-dessus du bouton Call */
+            right: 2rem;
+            z-index: 10;
+            animation: float 3s ease-in-out infinite;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            transition: background 0.3s ease;
+        }
+
+        .whatsapp-button:hover {
+            background: linear-gradient(135deg, #2ecc71, #1abc9c);
+        }
+
         .services-section {
             position: absolute;
             bottom: 2rem;
@@ -297,6 +312,10 @@ def index():
             }
             .contact-button {
                 bottom: 1rem;
+                right: 1rem;
+            }
+            .whatsapp-button {
+                bottom: 4rem; /* Ajusté pour mobile */
                 right: 1rem;
             }
             .services-section {
@@ -441,6 +460,33 @@ def index():
             font-size: 0.75rem;
             z-index: 10;
         }
+
+        .language-selector {
+            padding: 0.5rem;
+            background-color: rgba(59, 130, 246, 0.2);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            width: 100%;
+            margin: 0.5rem 0;
+        }
+
+        .language-selector:hover {
+            background-color: rgba(59, 130, 246, 0.4);
+        }
+
+        @media (max-width: 767px) {
+            .language-selector {
+                width: auto;
+                margin: 0.5rem 1rem;
+            }
+        }
+
+        .contact-button i, .whatsapp-button i {
+            margin-right: 8px;
+        }
     """
 
     custom_style = Style(custom_css + """
@@ -479,22 +525,18 @@ def index():
                 let greetingInterval = setInterval(cycleGreetings, 600);
                 cycleGreetings();
 
-                // Démarrer la progression de la barre immédiatement
                 setTimeout(() => {
                     loadingBar.style.width = '100%';
                 }, 100);
 
-                // Attendre que la page soit complètement chargée
-                window.onload = function() {
+                setTimeout(() => {
+                    splashScreen.style.opacity = '0';
+                    mainContent.style.opacity = '1';
+                    clearInterval(greetingInterval);
                     setTimeout(() => {
-                        splashScreen.style.opacity = '0';
-                        mainContent.style.opacity = '1';
-                        clearInterval(greetingInterval);
-                        setTimeout(() => {
-                            splashScreen.style.display = 'none';
-                        }, 500); // Délai pour la transition d'opacité
-                    }, 500); // Délai minimum après chargement complet
-                };
+                        splashScreen.style.display = 'none';
+                    }, 500);
+                }, 3000);
 
                 const navbar = document.querySelector('.fixed-navbar');
                 let lastScrollY = window.scrollY;
@@ -545,6 +587,98 @@ def index():
                 }
 
                 createScrollAnimations();
+
+                // Gestion de la traduction
+                const translations = {
+                    en: {
+                        "Work": "Work",
+                        "About": "About",
+                        "GitHub": "GitHub",
+                        "Think different": "Think different",
+                        "Chilavert N'dah": "Chilavert N'dah",
+                        "Software Developer": "Software Developer",
+                        "Call": "Call",
+                        "Text": "Text",
+                        "Services": "Services",
+                        "Web Site": "Web Site",
+                        "Web App": "Web App",
+                        "Mobile App": "Mobile App",
+                        "Projects": "Projects",
+                        "MC Agence Website": "MC Agence Website",
+                        "A responsive website design for a marketing agency built with Webflow. Features modern UI/UX design principles, smooth animations, and a client-focused approach.": "A responsive website design for a marketing agency built with Webflow. Features modern UI/UX design principles, smooth animations, and a client-focused approach.",
+                        "Visit Website": "Visit Website",
+                        "MonsterUI Library Contribution": "MonsterUI Library Contribution",
+                        "Contributed to the open-source MonsterUI library, which provides UI components for Python web applications. My pull request #30 added new features and improvements to the library.": "Contributed to the open-source MonsterUI library, which provides UI components for Python web applications. My pull request #30 added new features and improvements to the library.",
+                        "View PR on GitHub": "View PR on GitHub",
+                        "About Me": "About Me",
+                        "I'm a Computer Science graduate from UCAO in Cotonou. Currently, I work as a freelance Software Developer and actively contribute to various open-source projects to enhance my skills in full-stack development and cloud technologies. Outside of coding, I enjoy playing basketball, listening to music, and traveling. Fun fact: I once spent 3 hours debugging only to realize I forgot to save the file. 😅": "I'm a Computer Science graduate from UCAO in Cotonou. Currently, I work as a freelance Software Developer and actively contribute to various open-source projects to enhance my skills in full-stack development and cloud technologies. Outside of coding, I enjoy playing basketball, listening to music, and traveling. Fun fact: I once spent 3 hours debugging only to realize I forgot to save the file. 😅",
+                        "Resume": "Resume",
+                        "Things I Can Do Without Googling... Mostly": "Things I Can Do Without Googling... Mostly",
+                        "GitHub Stats & Contributions": "GitHub Stats & Contributions",
+                        "Let's Connect": "Let's Connect",
+                        "Feel free to reach out to me via email.": "Feel free to reach out to me via email.",
+                        "Send Email": "Send Email",
+                        "© 2025 Chilavert N'dah": "© 2025 Chilavert N'dah"
+                    },
+                    fr: {
+                        "Work": "Travaux",
+                        "About": "À propos",
+                        "GitHub": "GitHub",
+                        "Think different": "Pensez différemment",
+                        "Chilavert N'dah": "Chilavert N'dah",
+                        "Software Developer": "Développeur Logiciel",
+                        "Call": "Appeler",
+                        "Text": "Texte",
+                        "Services": "Services",
+                        "Web Site": "Site Web",
+                        "Web App": "Application Web",
+                        "Mobile App": "Application Mobile",
+                        "Projects": "Projets",
+                        "MC Agence Website": "Site Web MC Agence",
+                        "A responsive website design for a marketing agency built with Webflow. Features modern UI/UX design principles, smooth animations, and a client-focused approach.": "Un design de site web responsive pour une agence de marketing construit avec Webflow. Inclut des principes de design UI/UX modernes, des animations fluides et une approche centrée sur le client.",
+                        "Visit Website": "Visiter le site",
+                        "MonsterUI Library Contribution": "Contribution à la bibliothèque MonsterUI",
+                        "Contributed to the open-source MonsterUI library, which provides UI components for Python web applications. My pull request #30 added new features and improvements to the library.": "J'ai contribué à la bibliothèque open-source MonsterUI, qui fournit des composants UI pour les applications web Python. Ma pull request #30 a ajouté de nouvelles fonctionnalités et améliorations à la bibliothèque.",
+                        "View PR on GitHub": "Voir la PR sur GitHub",
+                        "About Me": "À propos de moi",
+                        "I'm a Computer Science graduate from UCAO in Cotonou. Currently, I work as a freelance Software Developer and actively contribute to various open-source projects to enhance my skills in full-stack development and cloud technologies. Outside of coding, I enjoy playing basketball, listening to music, and traveling. Fun fact: I once spent 3 hours debugging only to realize I forgot to save the file. 😅": "Je suis diplômé en informatique de l'UCAO à Cotonou. Actuellement, je travaille comme développeur logiciel freelance et contribue activement à divers projets open-source pour améliorer mes compétences en développement full-stack et technologies cloud. En dehors du codage, j'aime jouer au basketball, écouter de la musique et voyager. Anecdote amusante : j'ai passé 3 heures à déboguer pour réaliser que j'avais oublié de sauvegarder le fichier. 😅",
+                        "Resume": "CV",
+                        "Things I Can Do Without Googling... Mostly": "Choses que je peux faire sans Googler... en grande partie",
+                        "GitHub Stats & Contributions": "Statistiques et contributions GitHub",
+                        "Let's Connect": "Connectons-nous",
+                        "Feel free to reach out to me via email.": "N'hésitez pas à me contacter par email.",
+                        "Send Email": "Envoyer un email",
+                        "© 2025 Chilavert N'dah": "© 2025 Chilavert N'dah"
+                    }
+                };
+
+                let currentLang = 'en';
+
+                function updateLanguage(lang) {
+                    currentLang = lang;
+                    document.querySelectorAll('[data-translate]').forEach(element => {
+                        const key = element.getAttribute('data-translate');
+                        if (translations[lang][key]) {
+                            element.textContent = translations[lang][key];
+                        }
+                    });
+                }
+
+                const langSelector = document.getElementById('language-selector');
+                const mobileLangSelector = document.getElementById('mobile-language-selector');
+
+                langSelector.addEventListener('change', function() {
+                    updateLanguage(this.value);
+                    mobileLangSelector.value = this.value; // Synchroniser avec le mobile
+                });
+
+                mobileLangSelector.addEventListener('change', function() {
+                    updateLanguage(this.value);
+                    langSelector.value = this.value; // Synchroniser avec le desktop
+                });
+
+                // Initialisation en anglais
+                updateLanguage('en');
             });
         </script>
         <style>
@@ -568,13 +702,16 @@ def index():
                 ),
                 Div(
                     DivHStacked(
-                        A("Work", href="#work",
-                          cls="text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-blue-500/20"),
-                        A("About", href="#about",
-                          cls="text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-blue-500/20"),
-                        A("GitHub", href="https://github.com/99ch", target="_blank",
-                          cls="text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-blue-500/20"),
-                        cls="gap-2"
+                        A("Work", href="#work", cls="text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-blue-500/20", **{"data-translate": "Work"}),
+                        A("About", href="#about", cls="text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-blue-500/20", **{"data-translate": "About"}),
+                        A("GitHub", href="https://github.com/99ch", target="_blank", cls="text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-blue-500/20", **{"data-translate": "GitHub"}),
+                        Select(
+                            Option("English", value="en"),
+                            Option("Français", value="fr"),
+                            id="language-selector",
+                            cls="language-selector"
+                        ),
+                        cls="gap-2 items-center"
                     ),
                     cls="hidden md:flex"
                 ),
@@ -595,12 +732,15 @@ def index():
         ),
         Div(
             Div(
-                A("Work", href="#work",
-                  cls="block text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-3 border-b border-blue-500/20"),
-                A("About", href="#about",
-                  cls="block text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-3 border-b border-blue-500/20"),
-                A("GitHub", href="https://github.com/99ch", target="_blank",
-                  cls="block text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-3"),
+                A("Work", href="#work", cls="block text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-3 border-b border-blue-500/20", **{"data-translate": "Work"}),
+                A("About", href="#about", cls="block text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-3 border-b border-blue-500/20", **{"data-translate": "About"}),
+                A("GitHub", href="https://github.com/99ch", target="_blank", cls="block text-sm font-medium text-blue-100 hover:text-white transition-colors px-4 py-3 border-b border-blue-500/20", **{"data-translate": "GitHub"}),
+                Select(
+                    Option("English", value="en"),
+                    Option("Français", value="fr"),
+                    id="mobile-language-selector",
+                    cls="language-selector"
+                ),
                 cls="py-2"
             ),
             cls="hidden bg-slate-900 md:hidden",
@@ -610,32 +750,34 @@ def index():
     )
 
     hero = Section(
-        Span("Think different", cls="vertical-logo animate-on-scroll", **{"data-animation": "fadeInLeft"}),
+        Span("Think different", cls="vertical-logo animate-on-scroll", **{"data-translate": "Think different", "data-animation": "fadeInLeft"}),
         Div(
             Div(
-                H1("Chilavert N'dah", cls="text-5xl font-bold text-white animate-on-scroll",
-                   **{"data-animation": "fadeInDown"}),
-                P("Software Developer", cls="text-xl text-blue-100 animate-on-scroll",
-                  **{"data-animation": "fadeInUp"}),
+                H1("Chilavert N'dah", cls="text-5xl font-bold text-white animate-on-scroll", **{"data-translate": "Chilavert N'dah", "data-animation": "fadeInDown"}),
+                P("Software Developer", cls="text-xl text-blue-100 animate-on-scroll", **{"data-translate": "Software Developer", "data-animation": "fadeInUp"}),
                 cls="hero-title"
             ),
-            Button(
-                "Contact",
+            A(
+                I(cls="fas fa-phone"),  # Icône téléphone
+                Span("Call", **{"data-translate": "Call"}),
+                href="tel:+2290144432820",
                 cls="contact-button bg-yellow-400 text-black px-6 py-3 rounded-lg hover:bg-yellow-500 transition-colors animate-on-scroll",
-                onclick="location.href='#contact'",
+                **{"data-animation": "fadeIn"}
+            ),
+            A(
+                I(cls="fab fa-whatsapp"),  # Icône WhatsApp
+                Span("Text", **{"data-translate": "Text"}),
+                href="https://wa.me/+2290144432820",
+                cls="whatsapp-button text-white px-6 py-3 rounded-lg hover:bg-green-600 transition-colors animate-on-scroll",
+                target="_blank",
                 **{"data-animation": "fadeIn"}
             ),
             Div(
-                H3("Services", cls="text-white text-lg mb-2 animate-on-scroll", **{"data-animation": "fadeInLeft"}),
+                H3("Services", cls="text-white text-lg mb-2 animate-on-scroll", **{"data-translate": "Services", "data-animation": "fadeInLeft"}),
                 Ul(
-                    Li("Full-Stack Development",
-                       cls="text-white hover:text-blue-300 transition-colors animate-on-scroll",
-                       **{"data-animation": "fadeInLeft"}),
-                    Li("Open Source Contributions",
-                       cls="text-white hover:text-blue-300 transition-colors animate-on-scroll",
-                       **{"data-animation": "fadeInLeft"}),
-                    Li("UI/UX Design", cls="text-white hover:text-blue-300 transition-colors animate-on-scroll",
-                       **{"data-animation": "fadeInLeft"}),
+                    Li("Web Site", cls="text-white hover:text-blue-300 transition-colors animate-on-scroll", **{"data-translate": "Web Site", "data-animation": "fadeInLeft"}),
+                    Li("Web Application", cls="text-white hover:text-blue-300 transition-colors animate-on-scroll", **{"data-translate": "Web Application", "data-animation": "fadeInLeft"}),
+                    Li("Mobile Application", cls="text-white hover:text-blue-300 transition-colors animate-on-scroll", **{"data-translate": "Mobile Application", "data-animation": "fadeInLeft"}),
                     cls="list-none"
                 ),
                 cls="services-section"
@@ -649,8 +791,7 @@ def index():
     projects = Section(
         Container(
             DivCentered(
-                H2("Projects", cls="text-4xl font-semibold mb-12 animate-on-scroll text-slate-100",
-                   **{"data-animation": "fadeIn"}),
+                H2("Projects", cls="text-4xl font-semibold mb-12 animate-on-scroll text-slate-100", **{"data-translate": "Projects", "data-animation": "fadeIn"}),
                 Grid(
                     Card(
                         Div(
@@ -658,19 +799,15 @@ def index():
                             cls="overflow-hidden"
                         ),
                         CardBody(
-                            H3("MC Agence Website", cls="text-2xl font-medium mb-2 text-slate-100"),
-                            P("A responsive website design for a marketing agency built with Webflow. Features modern UI/UX design principles, smooth animations, and a client-focused approach.",
-                              cls="text-slate-400 text-sm mb-4"),
+                            H3("MC Agence Website", cls="text-2xl font-medium mb-2 text-slate-100", **{"data-translate": "MC Agence Website"}),
+                            P("A responsive website design for a marketing agency built with Webflow. Features modern UI/UX design principles, smooth animations, and a client-focused approach.", cls="text-slate-400 text-sm mb-4", **{"data-translate": "A responsive website design for a marketing agency built with Webflow. Features modern UI/UX design principles, smooth animations, and a client-focused approach."}),
                             Div(
                                 Span("Webflow", cls="project-tech-badge"),
                                 Span("Responsive Design", cls="project-tech-badge"),
                                 Span("UI/UX", cls="project-tech-badge"),
                                 cls="flex flex-wrap mt-2"
                             ),
-                            A("Visit Website",
-                              href="https://mc-agence.webflow.io",
-                              cls="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg mt-4 transition-colors",
-                              target="_blank"),
+                            A("Visit Website", href="https://mc-agence.webflow.io", cls="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg mt-4 transition-colors", target="_blank", **{"data-translate": "Visit Website"}),
                             cls="flex flex-col"
                         ),
                         cls="project-card hover:shadow-2xl animate-on-scroll bg-slate-800/50 backdrop-blur-sm border-0",
@@ -682,19 +819,15 @@ def index():
                             cls="overflow-hidden"
                         ),
                         CardBody(
-                            H3("MonsterUI Library Contribution", cls="text-2xl font-medium mb-2 text-slate-100"),
-                            P("Contributed to the open-source MonsterUI library, which provides UI components for Python web applications. My pull request #30 added new features and improvements to the library.",
-                              cls="text-slate-400 text-sm mb-4"),
+                            H3("MonsterUI Library Contribution", cls="text-2xl font-medium mb-2 text-slate-100", **{"data-translate": "MonsterUI Library Contribution"}),
+                            P("Contributed to the open-source MonsterUI library, which provides UI components for Python web applications. My pull request #30 added new features and improvements to the library.", cls="text-slate-400 text-sm mb-4", **{"data-translate": "Contributed to the open-source MonsterUI library, which provides UI components for Python web applications. My pull request #30 added new features and improvements to the library."}),
                             Div(
                                 Span("Python", cls="project-tech-badge"),
                                 Span("Open Source", cls="project-tech-badge"),
                                 Span("UI Components", cls="project-tech-badge"),
                                 cls="flex flex-wrap mt-2"
                             ),
-                            A("View PR on GitHub",
-                              href="https://github.com/AnswerDotAI/MonsterUI/pull/30",
-                              cls="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg mt-4 transition-colors",
-                              target="_blank"),
+                            A("View PR on GitHub", href="https://github.com/AnswerDotAI/MonsterUI/pull/30", cls="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg mt-4 transition-colors", target="_blank", **{"data-translate": "View PR on GitHub"}),
                             cls="flex flex-col"
                         ),
                         cls="project-card hover:shadow-2xl animate-on-scroll bg-slate-800/50 backdrop-blur-sm border-0",
@@ -711,15 +844,10 @@ def index():
     about = Section(
         Container(
             DivCentered(
-                H2("About Me", cls="text-4xl font-semibold mb-12 animate-on-scroll text-slate-100",
-                   **{"data-animation": "fadeIn"}),
+                H2("About Me", cls="text-4xl font-semibold mb-12 animate-on-scroll text-slate-100", **{"data-translate": "About Me", "data-animation": "fadeIn"}),
                 Grid(
                     Div(
-                        Img(src="image/full_profil.png",
-                            cls="w-full h-auto rounded-2xl shadow-2xl border-4 border-slate-700/20 animate-on-scroll",
-                            style="max-width: 500px;",
-                            loading="lazy",
-                            **{"data-animation": "fadeInLeft"}),
+                        Img(src="image/full_profil.png", cls="w-full h-auto rounded-2xl shadow-2xl border-4 border-slate-700/20 animate-on-scroll", style="max-width: 500px;", loading="lazy", **{"data-animation": "fadeInLeft"}),
                         cls="flex items-center justify-center"
                     ),
                     Div(
@@ -728,15 +856,9 @@ def index():
                             actively contribute to various open-source projects to enhance my skills in full-stack development and cloud technologies. 
                             Outside of coding, I enjoy playing basketball, listening to music, and traveling. 
                             Fun fact: I once spent 3 hours debugging only to realize I forgot to save the file. 😅
-                        """,
-                          cls="text-xl max-w-2xl leading-relaxed text-slate-300 animate-on-scroll mb-12",
-                          **{"data-animation": "fadeInRight"}),
+                        """, cls="text-xl max-w-2xl leading-relaxed text-slate-300 animate-on-scroll mb-12", **{"data-translate": "I'm a Computer Science graduate from UCAO in Cotonou. Currently, I work as a freelance Software Developer and actively contribute to various open-source projects to enhance my skills in full-stack development and cloud technologies. Outside of coding, I enjoy playing basketball, listening to music, and traveling. Fun fact: I once spent 3 hours debugging only to realize I forgot to save the file. 😅", "data-animation": "fadeInRight"}),
                         DivHStacked(
-                            A("Resume",
-                                   href="https://drive.google.com/drive/folders/1lI8KVnN6aZ6uaj7JpwG91GhEB3we0iIX?usp=drive_link",
-                                   cls="text-lg bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 rounded-lg transition-colors animate-on-scroll",
-                                   target="_blank",
-                                   **{"data-animation": "fadeInLeft"}),
+                            A("Resume", href="https://drive.google.com/drive/folders/1lI8KVnN6aZ6uaj7JpwG91GhEB3we0iIX?usp=drive_link", cls="text-lg bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 rounded-lg transition-colors animate-on-scroll", target="_blank", **{"data-translate": "Resume", "data-animation": "fadeInLeft"}),
                         ),
                         cls="flex flex-col items-start"
                     ),
@@ -751,52 +873,22 @@ def index():
     skills = Section(
         Container(
             DivCentered(
-                H2("Things I Can Do Without Googling... Mostly",
-                   cls="text-4xl font-semibold mb-12 animate-on-scroll",
-                   **{"data-animation": "fadeIn"}),
+                H2("Things I Can Do Without Googling... Mostly", cls="text-4xl font-semibold mb-12 animate-on-scroll", **{"data-translate": "Things I Can Do Without Googling... Mostly", "data-animation": "fadeIn"}),
                 Div(
-                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/python/python.png",
-                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll", title="Python",
-                        loading="lazy", **{"data-animation": "fadeIn"}),
-                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/django/django.png",
-                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll", title="Django",
-                        loading="lazy", **{"data-animation": "fadeIn"}),
-                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/cpp/cpp.png",
-                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll", title="C++",
-                        loading="lazy", **{"data-animation": "fadeIn"}),
-                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/html/html.png",
-                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll", title="HTML",
-                        loading="lazy", **{"data-animation": "fadeIn"}),
-                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/css/css.png",
-                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll", title="CSS",
-                        loading="lazy", **{"data-animation": "fadeIn"}),
-                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/bootstrap/bootstrap.png",
-                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll", title="Bootstrap",
-                        loading="lazy", **{"data-animation": "fadeIn"}),
-                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/javascript/javascript.png",
-                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll", title="JavaScript",
-                        loading="lazy", **{"data-animation": "fadeIn"}),
-                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/firebase/firebase.png",
-                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll", title="Firebase",
-                        loading="lazy", **{"data-animation": "fadeIn"}),
-                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/dart/dart.png",
-                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll", title="Dart",
-                        loading="lazy", **{"data-animation": "fadeIn"}),
-                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/flutter/flutter.png",
-                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll", title="Flutter",
-                        loading="lazy", **{"data-animation": "fadeIn"}),
-                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/latex/latex.png",
-                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll", title="LaTeX",
-                        loading="lazy", **{"data-animation": "fadeIn"}),
-                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/git/git.png",
-                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll", title="Git",
-                        loading="lazy", **{"data-animation": "fadeIn"}),
-                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/tensorflow/tensorflow.png",
-                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll", title="TensorFlow",
-                        loading="lazy", **{"data-animation": "fadeIn"}),
-                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/visual-studio-code/visual-studio-code.png",
-                        cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll", title="VS Code",
-                        loading="lazy", **{"data-animation": "fadeIn"}),
+                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/python/python.png", cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll", title="Python", loading="lazy", **{"data-animation": "fadeIn"}),
+                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/django/django.png", cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll", title="Django", loading="lazy", **{"data-animation": "fadeIn"}),
+                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/cpp/cpp.png", cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll", title="C++", loading="lazy", **{"data-animation": "fadeIn"}),
+                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/html/html.png", cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll", title="HTML", loading="lazy", **{"data-animation": "fadeIn"}),
+                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/css/css.png", cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll", title="CSS", loading="lazy", **{"data-animation": "fadeIn"}),
+                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/bootstrap/bootstrap.png", cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll", title="Bootstrap", loading="lazy", **{"data-animation": "fadeIn"}),
+                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/javascript/javascript.png", cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll", title="JavaScript", loading="lazy", **{"data-animation": "fadeIn"}),
+                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/firebase/firebase.png", cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll", title="Firebase", loading="lazy", **{"data-animation": "fadeIn"}),
+                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/dart/dart.png", cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll", title="Dart", loading="lazy", **{"data-animation": "fadeIn"}),
+                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/flutter/flutter.png", cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll", title="Flutter", loading="lazy", **{"data-animation": "fadeIn"}),
+                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/latex/latex.png", cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll", title="LaTeX", loading="lazy", **{"data-animation": "fadeIn"}),
+                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/git/git.png", cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll", title="Git", loading="lazy", **{"data-animation": "fadeIn"}),
+                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/tensorflow/tensorflow.png", cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll", title="TensorFlow", loading="lazy", **{"data-animation": "fadeIn"}),
+                    Img(src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/visual-studio-code/visual-studio-code.png", cls="h-16 w-16 mx-2 hover:scale-110 transition-transform animate-on-scroll", title="VS Code", loading="lazy", **{"data-animation": "fadeIn"}),
                     cls="flex flex-wrap justify-center gap-4 skills"
                 ),
                 cls="py-32",
@@ -808,21 +900,13 @@ def index():
     github_stats = Section(
         Container(
             DivCentered(
-                H2("GitHub Stats & Contributions",
-                   cls="text-4xl font-semibold mb-12 animate-on-scroll text-slate-100",
-                   **{"data-animation": "fadeIn"}),
+                H2("GitHub Stats & Contributions", cls="text-4xl font-semibold mb-12 animate-on-scroll text-slate-100", **{"data-translate": "GitHub Stats & Contributions", "data-animation": "fadeIn"}),
                 Div(
-                    Img(src="https://github-readme-streak-stats.herokuapp.com?user=99ch&theme=github-dark-blue&hide_border=True&background=0f172a",
-                        cls="w-full mb-8 rounded-lg animate-on-scroll", loading="lazy",
-                        **{"data-animation": "fadeInDown"}),
+                    Img(src="https://github-readme-streak-stats.herokuapp.com?user=99ch&theme=github-dark-blue&hide_border=True&background=0f172a", cls="w-full mb-8 rounded-lg animate-on-scroll", loading="lazy", **{"data-animation": "fadeInDown"}),
                     Grid(
-                        Img(src="https://github-readme-stats.vercel.app/api/top-langs/?username=99ch&layout=compact&theme=github_dark&hide_border=True&langs_count=10&bg_color=0f172a&height=300",
-                            cls="rounded-lg animate-on-scroll", loading="lazy",
-                            **{"data-animation": "fadeInRight"}),
+                        Img(src="https://github-readme-stats.vercel.app/api/top-langs/?username=99ch&layout=compact&theme=github_dark&hide_border=True&langs_count=10&bg_color=0f172a&height=300", cls="rounded-lg animate-on-scroll", loading="lazy", **{"data-animation": "fadeInRight"}),
                         Div(
-                            Img(src="https://github-readme-stats.vercel.app/api?username=99ch&show_icons=true&theme=github_dark&hide_border=True&bg_color=0f172a&height=300",
-                                cls="w-full h-full rounded-lg animate-on-scroll object-contain", loading="lazy",
-                                **{"data-animation": "fadeInRight"}),
+                            Img(src="https://github-readme-stats.vercel.app/api?username=99ch&show_icons=true&theme=github_dark&hide_border=True&bg_color=0f172a&height=300", cls="w-full h-full rounded-lg animate-on-scroll object-contain", loading="lazy", **{"data-animation": "fadeInRight"}),
                             cls="h-full"
                         ),
                         cls="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch h-full"
@@ -838,15 +922,9 @@ def index():
     contact = Section(
         Container(
             DivCentered(
-                H2("Let's Connect", cls="text-4xl font-semibold mb-12 animate-on-scroll",
-                   **{"data-animation": "fadeIn"}),
-                P("Feel free to reach out to me via email.",
-                  cls="text-xl text-center mb-8 animate-on-scroll",
-                  **{"data-animation": "fadeInUp"}),
-                A("Send Email",
-                  href="mailto:chilavertndah99@gmail.com",
-                  cls="text-lg bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 rounded-lg transition-colors animate-on-scroll",
-                  **{"data-animation": "fadeIn"}),
+                H2("Let's Connect", cls="text-4xl font-semibold mb-12 animate-on-scroll", **{"data-translate": "Let's Connect", "data-animation": "fadeIn"}),
+                P("Feel free to reach out to me via email.", cls="text-xl text-center mb-8 animate-on-scroll", **{"data-translate": "Feel free to reach out to me via email.", "data-animation": "fadeInUp"}),
+                A("Send Email", href="mailto:chilavertndah99@gmail.com", cls="text-lg bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 rounded-lg transition-colors animate-on-scroll", **{"data-translate": "Send Email", "data-animation": "fadeIn"}),
                 cls="py-32 contact-content",
                 id="contact"
             )
@@ -860,18 +938,13 @@ def index():
                 DivCentered(
                     Divider(cls="mb-12 border-blue-500/20"),
                     DivHStacked(
-                        A(Img(
-                            src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg",
-                            cls="h-8 w-8 animate__animated animate__bounce", loading="lazy"),
-                            href="https://www.linkedin.com/in/chilavert-n-dah-ab5779272/"),
+                        A(Img(src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg", cls="h-8 w-8 animate__animated animate__bounce", loading="lazy"), href="https://www.linkedin.com/in/chilavert-n-dah-ab5779272/"),
                         cls="gap-4 mb-6 justify-center"
                     ),
                     Div(
                         Div(
-                            P("© 2025 Chilavert N'dah",
-                              cls="footer-marquee-text text-9xl font-bold whitespace-nowrap inline-block animate-marquee"),
-                            P("© 2025 Chilavert N'dah",
-                              cls="footer-marquee-text text-9xl font-bold whitespace-nowrap inline-block animate-marquee"),
+                            P("© 2025 Chilavert N'dah", cls="footer-marquee-text text-9xl font-bold whitespace-nowrap inline-block animate-marquee", **{"data-translate": "© 2025 Chilavert N'dah"}),
+                            P("© 2025 Chilavert N'dah", cls="footer-marquee-text text-9xl font-bold whitespace-nowrap inline-block animate-marquee", **{"data-translate": "© 2025 Chilavert N'dah"}),
                             cls="footer-marquee-wrapper"
                         ),
                         cls="footer-marquee-container w-screen"
@@ -910,6 +983,7 @@ def index():
         custom_style,
         main_content
     )
+
 
 if __name__ == "__main__":
     from starlette.testclient import TestClient
