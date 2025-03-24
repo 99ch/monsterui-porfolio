@@ -1687,7 +1687,7 @@ def certifications_page():
                                **{"data-translate": "Microsoft Excel"}),
                             P("Microsoft through Coursera - Issued: Feb 2024", cls="text-slate-400 text-sm mb-4",
                               **{"data-translate": "Microsoft through Coursera - Issued: Feb 2024"}),
-                            A("View Certificate", href="#",
+                            A("View Certificate", href="https://coursera.org/verify/D25B5LG4WQCF",
                               cls="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors",
                               target="_blank", **{"data-translate": "View Certificate"})
                         ),
@@ -1718,7 +1718,7 @@ def certifications_page():
                                **{"data-translate": "Foundations of Cybersecurity"}),
                             P("Google through Coursera - Issued: Jan 2024", cls="text-slate-400 text-sm mb-4",
                               **{"data-translate": "Google through Coursera - Issued: Jan 2024"}),
-                            A("View Certificate", href="#",
+                            A("View Certificate", href="https://coursera.org/verify/6GN7VCA2WMAX",
                               cls="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors",
                               target="_blank", **{"data-translate": "View Certificate"})
                         ),
@@ -1733,7 +1733,7 @@ def certifications_page():
                                **{"data-translate": "Data Security"}),
                             P("Cisco through Coursera - Issued: Jul 2024", cls="text-slate-400 text-sm mb-4",
                               **{"data-translate": "Cisco through Coursera - Issued: Jul 2024"}),
-                            A("View Certificate", href="#",
+                            A("View Certificate", href="https://coursera.org/verify/7H8GLGF5TGUC",
                               cls="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors",
                               target="_blank", **{"data-translate": "View Certificate"})
                         ),
@@ -1751,7 +1751,7 @@ def certifications_page():
                               cls="text-slate-400 text-sm mb-4",
                               **{
                                   "data-translate": "California Institute of the Arts through Coursera - Issued: Jul 2024"}),
-                            A("View Certificate", href="#",
+                            A("View Certificate", href="https://coursera.org/verify/S63NWXR2XG4J",
                               cls="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors",
                               target="_blank", **{"data-translate": "View Certificate"})
                         ),
@@ -1769,7 +1769,7 @@ def certifications_page():
                               cls="text-slate-400 text-sm mb-4",
                               **{
                                   "data-translate": "The Hong Kong University of Science and Technology through Coursera - Issued: Jul 2024"}),
-                            A("View Certificate", href="#",
+                            A("View Certificate", href="https://coursera.org/verify/MRTJ7J8UA3AA",
                               cls="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors",
                               target="_blank", **{"data-translate": "View Certificate"})
                         ),
@@ -1784,7 +1784,7 @@ def certifications_page():
                                **{"data-translate": "Responsive Web Design"}),
                             P("freeCodeCamp - Issued: Aug 2024", cls="text-slate-400 text-sm mb-4",
                               **{"data-translate": "freeCodeCamp - Issued: Aug 2024"}),
-                            A("View Certificate", href="#",
+                            A("View Certificate", href="https://freecodecamp.org/certification/fcc2ab33543-32d3-4db7-aa84-21227a34c7d1/responsive-web-design",
                               cls="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors",
                               target="_blank", **{"data-translate": "View Certificate"})
                         ),
